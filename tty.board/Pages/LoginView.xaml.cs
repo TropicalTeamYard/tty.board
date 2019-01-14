@@ -39,7 +39,6 @@ namespace tty.Pages
             Back?.Invoke(sender, e);
         }
         #endregion
-
         #region 输入检查
         private bool isInputValid = false;
         private void CheckInput()
@@ -97,8 +96,6 @@ namespace tty.Pages
             CheckInput();
         }
         #endregion
-
-
         #region 登录
         private void Com_LoginCompleted(object sender, MessageEventArgs e)
         {

@@ -1,0 +1,146 @@
+﻿<Page x:Class="tty.Pages.UserPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:tty.Pages"
+      xmlns:model="clr-namespace:tty.Model"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="280"
+      Title="UserPage">
+
+    <Grid >
+        <ScrollViewer Style="{StaticResource IScrollViewer}">
+            <StackPanel Orientation="Vertical">
+                <!--用户信息头部-->
+                <Grid Height="70">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <model:ImageTriggerButtonRound x:Name="imgPortrait" CanAutoCheck="False" Margin="5" ImageSource="/Assets/sampleicon.jpg"/>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="tbkNickName" Style="{StaticResource DisplayText}" Text="wcf" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                        <TextBlock x:Name="tbkUserName" Grid.Row="1" Style="{StaticResource DisplayText}" VerticalAlignment="Top" Margin="0,5,0,0" Text="10088" FontSize="12" Foreground="Gray"/>
+                    </Grid>
+                    <Grid Grid.Column="2" Width="40" Height="40">
+                        <Ellipse Fill="OrangeRed"/>
+                        <model:IconButtonRound Text="&#xe7e8;" FontSize="14" Click="IconButtonExitOpen_Click"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="gridRepair" Visibility="Collapsed" Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource DisplayText}" Text="&#xe783;" FontFamily="Segoe MDL2 Assets" FontSize="14" FontWeight="Thin" Foreground="Yellow"/>
+                    <TextBlock x:Name="tbkRepair" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource DisplayText}" Text="需要修复账户" FontSize="12" Foreground="Yellow" />
+                    <model:IconBar x:Name="ibarRepairOpen" Grid.Column="2"  Margin="5" Icon="&#xe90f;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="修复账户" Click="IconBarRepairOpen_Click"/>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <TextBlock Style="{StaticResource DisplayText}" FontSize="12" Text="基本信息" Foreground="DarkGray" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="邮箱"/>
+                        <TextBlock Grid.Column="1" Style="{StaticResource DisplayText}" FontSize="12" Foreground="Lavender" HorizontalAlignment="Left"
+                                   Text="www.yyy.edu.cn"/>
+                    </Grid>
+                    <model:IconBar x:Name="ibarChangeInfo" Grid.Row="2" Grid.Column="2" Width="120" HorizontalAlignment="Right" Margin="5" Icon="&#xe70f;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="修改信息" Click="IconBarChangeInfo_Click"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid x:Name="gridRepairFlyout" Background="#99000000" Visibility="Collapsed">
+            <Grid Height="240">
+                <Grid Width="40" Height="40" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Ellipse Fill="#4488AA"/>
+                    <model:IconButtonRound Text="&#xe72b;" FontSize="16" FontFamily="Segoe MDL2 Assets" Click="IconButtonRepairBack_Click"/>
+                </Grid>
+                <Grid Height="120" VerticalAlignment="Top" Margin="0,60,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid  Margin="10">
+                        <Ellipse Fill="#44FFFFFF"/>
+                        <model:IconButtonRound  FontSize="16" Text="&#xe8d7;" FontFamily="Segoe MDL2 Assets"/>
+                    </Grid>
+                    <model:IconPasswordBox x:Name="pwb1"  Grid.Column="1" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入密码" PasswordChanged="Pwb1_PasswordChanged"/>
+                    <model:IconBar IsEnabled="False" x:Name="ibarRepair" Grid.Row="2" Grid.ColumnSpan="2" Width="120" Margin="5" Icon="&#xe90f;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="修复账户" Click="IbarRepair_Click"/>
+
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="gridChangeInfoFlyout" Background="#99000000" Visibility="Collapsed">
+            <Grid Height="Auto" VerticalAlignment="Center">
+                <Grid Width="40" Height="40" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Ellipse Fill="#4488AA"/>
+                    <model:IconButtonRound Text="&#xe72b;" FontSize="16" FontFamily="Segoe MDL2 Assets" Click="IconButtonChangeInfoBack_Click"/>
+                </Grid>
+                <Grid Height="Auto" VerticalAlignment="Top" Margin="0,60,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="昵称"/>
+                        <model:IconTextBox  Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入昵称" />
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="邮箱"/>
+                        <model:IconTextBox  Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入邮箱" />
+                    </Grid>
+                    <model:IconBar IsEnabled="False"  Grid.Row="3" Grid.ColumnSpan="2" Width="120" Margin="5" Icon="&#xe73e;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="提交更改" />
+
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="gridExitLoginFlyout" Background="#99000000" Visibility="Collapsed">
+            <Grid Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Width="40" Height="40">
+                    <Ellipse Fill="#4488AA"/>
+                    <model:IconButtonRound Text="&#xe72b;" FontSize="14" Click="IconButtonExitBack_Click"/>
+                </Grid>
+                <Grid Grid.Row="2" Width="40" Height="40">
+                    <Ellipse Fill="OrangeRed"/>
+                    <model:IconButtonRound Text="&#xe7e8;" FontSize="14" Click="IconButtonExit_Click"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

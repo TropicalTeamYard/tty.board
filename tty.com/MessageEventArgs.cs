@@ -8,7 +8,7 @@ namespace tty.com
 {
     public class MessageEventArgs:EventArgs
     {
-        public MessageEventArgs( bool status, string msg, object data = null)
+        public MessageEventArgs(bool status, string msg, object data = null)
         {
             Status = status;
             Msg = msg;

@@ -7,7 +7,7 @@
       xmlns:model="clr-namespace:tty.Model"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="1920"
-      Title="MainPage" Background="Black">
+      Title="MainPage" Background="Black" Loaded="Page_Loaded">
 
     <Grid>
         <Grid x:Name="GridTitle" Background="Transparent" VerticalAlignment="Top" Height="32">
@@ -22,13 +22,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Margin="10,0" VerticalAlignment="Top" Height="500" Background="#44FFFFFF" CornerRadius="5">
-                <Grid >
-                    <Ellipse Width="60" Height="60">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="/Assets/sampleicon.jpg"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Grid>
+                <Frame x:Name="rightFrame"/>
             </Border>
 
             <Grid Grid.Column="1">
@@ -43,7 +37,7 @@
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">
                     <Ellipse Fill="#44FFFFFF"/>
-                    <model:ImageTriggerButtonRound  FontSize="16" />
+                    <model:ImageTriggerButtonRound x:Name="ibtnUser" FontSize="16" />
                 </Grid>
             </Grid>
 

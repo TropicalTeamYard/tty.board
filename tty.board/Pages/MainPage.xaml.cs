@@ -24,6 +24,17 @@ namespace tty.Pages
         {
             InitializeComponent();
             App.Instance.Window.SetTitleBar(GridTitle);
+
+            ibtnUser.SetBinding(Model.ImageTriggerButtonRound.ImageSourceProperty, new Binding() { Source = App.Instance.Com.User.Current, Path = new PropertyPath("Portrait") });
+            
+            Console.WriteLine("---Window ---MainPage ---SetBindingPortrait");
+
+            rightFrame.NavigateTo(typeof(UserPage));
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

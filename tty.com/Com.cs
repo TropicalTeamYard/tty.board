@@ -23,13 +23,27 @@ namespace tty.com
             Dispatcher = dispatcher;
         }
 
-        public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.board";
         private string userpath => Cache + @"\User.json";
+        private DispatcherTimer Timer { get; } = new DispatcherTimer()
+        {
+            Interval = TimeSpan.FromMinutes(10),
+            IsEnabled = false
+        };
 
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (User.Current.userstate == UserState.Success)
+            {
+                UpdateUserInfoAsync();
+            }
+            Console.WriteLine("---Com ---Timer ---Raised");
+        }
+
+        public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.board";
         public API API = new API();
         public Dispatcher Dispatcher { get; }
         public bool IsLoaded { get; private set; }
-        public User User { get; private set; } = new Data.User();
+        public User User { get; private set; } = new User();
 
         public event EventHandler<MessageEventArgs> InitializeCompleted;
         public event EventHandler<MessageEventArgs> LoginCompleted;
@@ -43,12 +57,17 @@ namespace tty.com
             {
                 if (!IsLoaded)
                 {
+                    Timer.Tick += Timer_Tick;
                     //载入文件
                     if (File.Exists(userpath))
                     {
                         try
                         {
-                            User = JsonConvert.DeserializeObject<Data.User>(File.ReadAllText(userpath));
+                            var str = File.ReadAllText(userpath);
+                            Dispatcher.Invoke(() =>
+                            {
+                                User = JsonConvert.DeserializeObject<User>(str);
+                            });
                         }
                         catch (Exception)
                         {
@@ -71,19 +90,57 @@ namespace tty.com
                     else
                     {
                         data = 2;
-                        msg = "登录成功";
+                        AutoLoginAsync();
+                        msg = "";
                     }
                     IsLoaded = true;
 
                     Thread.Sleep(500);
+
+                    Console.WriteLine($"---Com ---Initialize ---{msg}");
 
                     Dispatcher.Invoke(() =>
                     {
                         InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
                     });
                 }
+                else
+                {
+                    Restart();
+                }
             });
         }
+        private void Restart()
+        {
+            Dispatcher.Invoke(() => {
+                int data = 0;
+                string msg = "";
+
+                //说明没有登录
+                if (User.Current == null || User.Current.username == "" || User.Current.username == null)
+                {
+                    data = 0;
+                    msg = "";
+                }
+                else if (User.Current.credit == null || User.Current.credit == "")
+                {
+                    data = 1;
+                    msg = "";
+                }
+                else
+                {
+                    data = 2;
+                    AutoLoginAsync();
+                    msg = "";
+                }
+
+                Console.WriteLine($"---Com ---Initialize ---{msg}");
+                InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
+            });
+        }
+        /// <summary>
+        /// 启用自动定时刷新状态
+        /// </summary>
         public void Finish()
         {
             try
@@ -128,17 +185,18 @@ namespace tty.com
                         LoginCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
                     });
 
+                    UpdateUserInfoAsync();
                 }
                 else
                 {
                     await Task.Delay(1000);
                     Dispatcher.Invoke(() =>
                     {
-
                         LoginCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                     });
                 }
 
+                Console.WriteLine($"---Com ---Login ---{result.msg}");
             }
             catch (Exception ex)
             {
@@ -147,6 +205,53 @@ namespace tty.com
                 {
                     LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"登录操作失败 {ex.Message}"));
                 });
+                Console.WriteLine($"---Com ---Login ---{ex.Message}");
+            }
+        }
+        public async void AutoLoginAsync()
+        {
+            try
+            {
+                ResponceModel<UserInfo> result = null;
+
+                if (User.Current.credit != null && User.Current.credit != "")
+                {
+                    await Task.Run(() =>
+                    {
+                        var postdata = $"method=autologin&credit={User.Current.credit}";
+                        result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
+                            HttpUtil.post(API[APIKey.User], postdata)
+                            );
+                    });
+
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (result.code == 200)
+                        {
+                            User.Current.username = result.data.username;
+                            User.Current.nickname = result.data.nickname;
+                            User.Current.credit = result.data.credit;
+                            User.Current.userstate = UserState.Success;
+                            LoginCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
+                        }
+                        else
+                        {
+                            User.Current.userstate = UserState.PasswordError;
+                            LoginCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
+                        }
+                        
+                        Console.WriteLine($"---Com ---AutoLogin ---{result.msg}");
+                    });
+                }
+                else
+                {
+                    Console.WriteLine($"---Com ---AutoLogin ---用户凭证不存在");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"自动登录失败 {ex.Message}"));
             }
         }
         public async void UpdateUserInfoAsync()
@@ -155,14 +260,14 @@ namespace tty.com
             {
                 ResponceModel<UserInfo> result = null;
 
-                await Task.Run(() => 
+                await Task.Run(() =>
                 {
                     var postdata = $"type=base&credit={User.Current.credit}";
                     result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
                 });
 
 
-                Dispatcher.Invoke(() => 
+                Dispatcher.Invoke(() =>
                 {
                     if (result.code == 200)
                     {
@@ -177,16 +282,21 @@ namespace tty.com
                     }
                     else
                     {
-                        User.Current.userstate = UserState.Waring;
+                        User.Current.userstate = UserState.PasswordError;
                     }
-                    MessageInvoked?.Invoke(this, new MessageEventArgs("getinfo_base", result.msg));
                 });
 
+                Console.WriteLine($"---Com ---UpdateUserInfo ---{result.msg}");
             }
             catch (Exception ex)
             {
-                MessageInvoked?.Invoke(this, new MessageEventArgs("getinfo_base", $"获取用户基础信息失败 {ex.Message}"));
+                Console.WriteLine($"---Com ---UpdateUserInfo ---{ex.Message}");
             }
+        }
+        public void ExitLogin()
+        {
+            User.Current.credit = null;
+            //Finish();
         }
     }
 }

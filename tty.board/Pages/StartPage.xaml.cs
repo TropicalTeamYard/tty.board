@@ -27,26 +27,20 @@ namespace tty.Pages
 
             //设置标题栏，提供移动功能。
             App.Instance.Window.SetTitleBar(GridTitle);
+            App.Instance.Com.InitializeCompleted += Com_InitializeCompleted;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            App.Instance.Com = new Com(Dispatcher);
-
-            App.Instance.Com.InitializeCompleted += Com_InitializeCompleted;
             App.Instance.Com.InitializeAsync();
-            
         }
-       
+
         private void Com_InitializeCompleted(object sender, MessageEventArgs e)
         {
             int data = (int)e.Data;
 
-            if (data == 0)
-            {
-                gridStart.Visibility = Visibility.Visible;
-                gridRing.Visibility = Visibility.Collapsed;
-            }
-            else if (data == 1)
+            gridStart.Visibility = Visibility.Visible;
+            gridRing.Visibility = Visibility.Collapsed;
+            if (data == 1)
             {
                 ViewStart.Visibility = Visibility.Collapsed;
                 ViewLogin.Visibility = Visibility.Visible;

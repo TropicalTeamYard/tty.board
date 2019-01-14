@@ -13,7 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using tty.com;
 using tty.Model;
 using tty.Pages;
 
@@ -49,7 +49,10 @@ namespace tty
                 windowLocation = new Point(Left / ScreenSize.Width, Top / ScreenSize.Height);
                 windowSize = new Size(Width / ScreenSize.Width, Height / ScreenSize.Height);
             };
-            
+            if (App.Instance.Com == null)
+            {
+                App.Instance.Com = new Com(Dispatcher);
+            }
             //{debug}
             NavigateTo(typeof(StartPage));
             //{debug}
@@ -293,18 +296,21 @@ namespace tty
         #region 发送消息
         public void SendMessage(string msg)
         {
-            TextBlockMsg.Text = msg;
-            BorderMsg.Visibility = Visibility.Visible;
-            DoubleAnimation opAnimaiton = new DoubleAnimation
+            if (msg != null && msg!="")
             {
-                From = 1,
-                To = 0,
-                EasingFunction = new BackEase() { EasingMode = EasingMode.EaseIn },
-                Duration = new Duration(TimeSpan.FromSeconds(2)),
-            };
-            opAnimaiton.Completed += (s, e) => { BorderMsg.Visibility = Visibility.Collapsed; };
+                TextBlockMsg.Text = msg;
+                BorderMsg.Visibility = Visibility.Visible;
+                DoubleAnimation opAnimaiton = new DoubleAnimation
+                {
+                    From = 1,
+                    To = 0,
+                    EasingFunction = new BackEase() { EasingMode = EasingMode.EaseIn },
+                    Duration = new Duration(TimeSpan.FromSeconds(2)),
+                };
+                opAnimaiton.Completed += (s, e) => { BorderMsg.Visibility = Visibility.Collapsed; };
 
-            BorderMsg.BeginAnimation(Border.OpacityProperty, opAnimaiton);
+                BorderMsg.BeginAnimation(Border.OpacityProperty, opAnimaiton);
+            }
         }
         #endregion
 
