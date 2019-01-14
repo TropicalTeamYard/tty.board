@@ -13,6 +13,6 @@
                 <ImageBrush ImageSource="{Binding ImageSource,ElementName=IconButtonthis}"/>
             </Ellipse.Fill> 
         </Ellipse>
-        <TextBlock x:Name="TextBlockIcon" Style="{StaticResource IFont}" FontSize="{Binding FontSize, ElementName=IconButtonthis}" Text="{Binding Text, ElementName=IconButtonthis}" />
+        <TextBlock x:Name="TextBlockIcon" Style="{StaticResource IFont}" FontSize="{Binding FontSize, ElementName=IconButtonthis}" Text="&#xe77b;" />
     </Grid>
 </local:CheckControl>

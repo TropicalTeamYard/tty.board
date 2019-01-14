@@ -97,6 +97,7 @@ namespace tty.com
             string data = JsonConvert.SerializeObject(User);
             File.WriteAllText(userpath, data);
         }
+
         public async void LoginAsync(string username, string password)
         {
             try
@@ -146,6 +147,45 @@ namespace tty.com
                 {
                     LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"登录操作失败 {ex.Message}"));
                 });
+            }
+        }
+        public async void UpdateUserInfoAsync()
+        {
+            try
+            {
+                ResponceModel<UserInfo> result = null;
+
+                await Task.Run(() => 
+                {
+                    var postdata = $"type=base&credit={User.Current.credit}";
+                    result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
+                });
+
+
+                Dispatcher.Invoke(() => 
+                {
+                    if (result.code == 200)
+                    {
+
+                        // TODO 正在修改
+                        User.Current.nickname = result.data.nickname;
+                        User.Current.portrait = result.data.portrait;
+                        User.Current.email = result.data.email;
+                        User.Current.phone = result.data.phone;
+
+                        User.Current.userstate = UserState.Success;
+                    }
+                    else
+                    {
+                        User.Current.userstate = UserState.Waring;
+                    }
+                    MessageInvoked?.Invoke(this, new MessageEventArgs("getinfo_base", result.msg));
+                });
+
+            }
+            catch (Exception ex)
+            {
+                MessageInvoked?.Invoke(this, new MessageEventArgs("getinfo_base", $"获取用户基础信息失败 {ex.Message}"));
             }
         }
     }

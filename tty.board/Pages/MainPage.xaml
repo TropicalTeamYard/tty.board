@@ -43,7 +43,7 @@
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">
                     <Ellipse Fill="#44FFFFFF"/>
-                    <model:ImageTriggerButtonRound  ImageSource="/Assets/sampleicon.jpg" FontSize="16" />
+                    <model:ImageTriggerButtonRound  FontSize="16" />
                 </Grid>
             </Grid>
 

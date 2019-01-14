@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Media.Imaging;
+using tty.com.Util;
 
 namespace tty.com.Model
 {
@@ -56,9 +58,33 @@ namespace tty.com.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userstate)));
             }
         }
+        public string portrait { get=>_portrait; set
+            {
+                _portrait = value;
 
+                try
+                {
+                    if (value == "default::unset")
+                    {
+                        Portrait = null;
+                    }
+                    else
+                    {
+                        Portrait = ToolUtil.BytesToBitmapImage(ToolUtil.HexToBytes(value));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Portrait)));
+                    }
+                }
+                catch (Exception)
+                {
+                    Portrait = null;
+                }
+
+            }
+        }
         public string credit { get; set; }
 
+        [JsonIgnore]
+        public BitmapImage Portrait { get; private set; }
 
         public void CopyFrom(UserInfo other)
         {

@@ -32,7 +32,22 @@ namespace tty.Model
             set { SetValue(ImageSourceProperty, value); }
         }
         public static readonly DependencyProperty ImageSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(ImageTriggerButtonRound), new PropertyMetadata(null));
+            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(ImageTriggerButtonRound), new PropertyMetadata(null,(d,e)=> 
+            {
+                ((ImageTriggerButtonRound)d).OnImageSourceChanged();
+            }));
+
+        private void OnImageSourceChanged()
+        {
+            if (ImageSource == null)
+            {
+                TextBlockIcon.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TextBlockIcon.Visibility = Visibility.Collapsed;
+            }
+        }
 
         private void IconButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
