@@ -1,0 +1,13 @@
+﻿<local:CheckControl x:Name="IconButtonthis" x:Class="tty.Model.IconTriggerButtonRound"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:tty.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="48" Background="Transparent" MouseMove="IconButton_MouseMove" MouseLeave="IconButton_MouseLeave" MouseDown="IconButton_MouseDown" MouseUp="IconButton_MouseUp">
+    <Grid>
+        <Ellipse x:Name="elp1" />
+        <TextBlock x:Name="TextBlockIcon" Style="{StaticResource IFont}" FontSize="{Binding FontSize, ElementName=IconButtonthis}" Text="{Binding Text, ElementName=IconButtonthis}" />
+    </Grid>
+</local:CheckControl>
