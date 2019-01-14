@@ -22,11 +22,18 @@
             </Grid.ColumnDefinitions>
 
             <Border Margin="10,0" VerticalAlignment="Top" Height="500" Background="#44FFFFFF" CornerRadius="5">
-                <Grid />
+                <Grid >
+                    <Ellipse Width="60" Height="60">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/Assets/sampleicon.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Grid>
             </Border>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
                     <RowDefinition Height="60"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -34,7 +41,10 @@
                     <Ellipse Fill="#44FFFFFF"/>
                     <model:IconTriggerButtonRound  FontSize="16" Text="&#xe713;" FontFamily="Segoe MDL2 Assets"/>
                 </Grid>
-
+                <Grid Grid.Row="1" Margin="10">
+                    <Ellipse Fill="#44FFFFFF"/>
+                    <model:ImageTriggerButtonRound  ImageSource="/Assets/sampleicon.jpg" FontSize="16" />
+                </Grid>
             </Grid>
 
 

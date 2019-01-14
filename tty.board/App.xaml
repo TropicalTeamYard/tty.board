@@ -483,7 +483,7 @@
             </Setter>
         </Style>
 
-        <!--圆形图片-->
+
         <Style x:Key="DisplayText" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>

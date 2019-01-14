@@ -76,6 +76,9 @@
     <Compile Include="Model\IconTriggerButtonRound.xaml.cs">
       <DependentUpon>IconTriggerButtonRound.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\ImageTriggerButtonRound.xaml.cs">
+      <DependentUpon>ImageTriggerButtonRound.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ProcessRing.cs" />
     <Compile Include="Pages\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -137,6 +140,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Model\IconTriggerButtonRound.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\ImageTriggerButtonRound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,6 +220,9 @@
       <Project>{cf17bd99-9115-4dcb-a6a1-2d34108706ff}</Project>
       <Name>tty.com</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\sampleicon.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
