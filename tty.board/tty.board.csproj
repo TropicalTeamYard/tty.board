@@ -79,6 +79,9 @@
     <Compile Include="Model\ImageTriggerButtonRound.xaml.cs">
       <DependentUpon>ImageTriggerButtonRound.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\MsgCard.xaml.cs">
+      <DependentUpon>MsgCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ProcessRing.cs" />
     <Compile Include="Pages\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -153,6 +156,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Model\MsgCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Model\UButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -218,6 +225,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Assets\fontawesome-webfont.ttf" />
+    <Resource Include="Assets\ic_huaji.png" />
     <Resource Include="Assets\segmdl2.ttf" />
     <Resource Include="Assets\VIcon.ttf" />
     <Resource Include="Assets\icomoon.ttf" />
@@ -237,9 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\sampleicon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\ic_huaji.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

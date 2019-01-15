@@ -24,6 +24,7 @@ namespace tty.com
         }
 
         private string userpath => Cache + @"\User.json";
+        private string msgpath => Cache + @"\Msg.json";
         private DispatcherTimer Timer { get; } = new DispatcherTimer()
         {
             Interval = TimeSpan.FromSeconds(10),
@@ -35,6 +36,8 @@ namespace tty.com
             if (User.Current.userstate == UserState.Success)
             {
                 UpdateUserInfoAsync();
+                UpdateMsgAsync();
+                UpdateSharedInfoAsync();
             }
             Console.WriteLine("---Com ---Timer ---Raised");
         }
@@ -67,12 +70,93 @@ namespace tty.com
                 InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
             });
         }
+        private async void AddSharedInfoAsync(UserInfo userInfo)
+        {
+            await Task.Run(() =>
+            {
+                #region 提交信息
+                bool flag = false;
+                if (User.Users != null)
+                {
+                    var selected = from item in User.Users
+                                   where item.username == userInfo.username
+                                   select item;
+                    if (selected.Count() > 0)
+                    {
+                        var user = selected.First();
+                        user.CopyFrom(userInfo);
+                        user.IsLoaded = true;
+                        flag = true;
+                    }
+                }
+                if (!flag)
+                {
+                    List<UserInfo> users = User.Users.ToList();
+                    userInfo.IsLoaded = true;
+                    users.Add(userInfo);
+
+                    User.Users = users.ToArray();
+                }
+                #endregion
+            });
+        }
+        private void pullmsg(MsgUni msg)
+        {
+            var select = from item in User.Users where item.username == msg.username select item;
+            if (select != null && select.Count() > 0)
+            {
+                var user = select.First();
+
+                msg.nickname = user.nickname;
+                msg.portrait = user.Portrait;
+
+                for (int i = 0; i < Msg.Msgs.Count; i++)
+                {
+                    var cu = Msg.Msgs[i];
+                    if (cu.id == msg.id)
+                    {
+                        Msg.Msgs[i] = msg;
+                        return;
+                    }
+                    //倒序插入。
+                    else if (cu.id < msg.id)
+                    {
+                        Msg.Msgs.Insert(i, msg);
+                        return;
+                    }
+                }
+                Msg.Msgs.Add(msg);
+            }
+
+            Console.WriteLine($"---Com ---pullmsg  ---wheremsgid:{msg.id}");
+        }
+        private void pulluserInfo(UserInfo user)
+        {
+            Dispatcher.Invoke(() => {
+                var selected = from item in Msg.Msgs where item.username == user.username select item;
+
+                foreach (var msg in selected)
+                {
+                    msg.nickname = user.nickname;
+                    try
+                    {
+                        msg.portrait = ToolUtil.BytesToBitmapImage(ToolUtil.HexToBytes(user.portrait));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+                Console.WriteLine($"---Com ---pulluserInfo ---whereusername:{user.username}");
+            });
+        }
 
         public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.board";
         public API API = new API();
         public Dispatcher Dispatcher { get; }
         public bool IsLoaded { get; private set; }
         public User User { get; private set; } = new User();
+        public Msg Msg { get; private set; } = new Msg();
 
         public event EventHandler<MessageEventArgs> InitializeCompleted;
         public event EventHandler<MessageEventArgs> LoginCompleted;
@@ -168,6 +252,8 @@ namespace tty.com
                     result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
                             HttpUtil.post(API[APIKey.User], postdata)
                             );
+
+
                 }
                 catch (Exception ex)
                 {
@@ -194,6 +280,7 @@ namespace tty.com
                         User.Current.nickname = result.data.nickname;
                         User.Current.credit = result.data.credit;
                         User.Current.userstate = UserState.Success;
+
                         LoginCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
                     });
 
@@ -287,6 +374,7 @@ namespace tty.com
                             User.Current.credit = result.data.credit;
                             User.Current.userstate = UserState.Success;
                             LoginCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
+
                         }
                         else
                         {
@@ -328,12 +416,13 @@ namespace tty.com
                 {
                     if (result.code == 200)
                     {
-
                         // TODO 正在修改
                         User.Current.nickname = result.data.nickname;
                         User.Current.portrait = result.data.portrait;
                         User.Current.email = result.data.email;
                         User.Current.phone = result.data.phone;
+
+                        AddSharedInfoAsync(User.Current);
 
                         User.Current.userstate = UserState.Success;
                     }
@@ -361,7 +450,9 @@ namespace tty.com
                 }
                 catch (Exception ex)
                 {
-                    
+                    ChangeNickNameCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
+
+                    Console.WriteLine($"---Com ---ChangeNickName ---{ex.Message}");
                 }
             });
 
@@ -381,6 +472,116 @@ namespace tty.com
                         ChangeNickNameCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                     }
                 });
+                Console.WriteLine($"---COM ---ChangeNickName ---{result.msg}");
+            }
+        }
+        public async void GetSharedUserInfoAsync(IEnumerable<string> users)
+        {
+            ResponceModel<UserInfo[]> result = null;
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var postdata = $"type=user&query={JsonConvert.SerializeObject(users.ToArray())}";
+                    result = JsonConvert.DeserializeObject<ResponceModel<UserInfo[]>>(
+                        HttpUtil.post(API[APIKey.Shared], postdata)
+                        );
+                }
+                catch (Exception)
+                {
+                }
+            });
+
+            if (result != null)
+            {
+                if (result.code == 200)
+                {
+                    foreach (var re in result.data)
+                    {
+                        var seusers = from item in User.Users where item.username == re.username select item;
+                        if (seusers.Count() > 0)
+                        {
+                            var user = seusers.First();
+                            user.CopyFrom(re);
+                        }
+                    }
+
+                    Console.WriteLine($"---Com ---GetSharedInfo ---{result.msg}");
+                }
+            }
+        }
+        /// <summary>
+        /// 更新共享用户信息。
+        /// </summary>
+        public async void UpdateSharedInfoAsync()
+        {
+            if (User.Users != null)
+            {
+                IEnumerable<string> needupdate = from item in User.Users where item.IsLoaded == false select item.username;
+                IEnumerable<string> added = null;
+
+                ResponceModel<User_MD5[]> result = null;
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        var nk = from item in User.Users where item.IsLoaded == true select item;
+                        var postdata = $"type=usermd5&query={JsonConvert.SerializeObject(nk.ToArray())}";
+                        result = JsonConvert.DeserializeObject<ResponceModel<User_MD5[]>>(
+                                HttpUtil.post(API[APIKey.Shared], postdata)
+                            );
+
+                        if (result.code == 200)
+                        {
+                            added = from item in nk where (item.md5 != result.data.TakeWhile((m) => m.username == item.username).First().username) select item.username;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                });
+
+                var all = needupdate.Concat(added);
+
+                Console.WriteLine($"---Com ---UpdateShareInfo ---{result.msg}");
+            }
+
+        }
+        public async void UpdateMsgAsync()
+        {
+            ResponceModel<Time_Msg> result = null;
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var postdata = $"method=update&credit={User.Current.credit}&time={Msg.UpdateTime.ToString()}";
+                    result = JsonConvert.DeserializeObject<ResponceModel<Time_Msg>>(
+                        HttpUtil.post(API[APIKey.MsgBoard], postdata)
+                        );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"---Com ---UpdateMsg ---{ex.Message}");
+                }
+            });
+
+            if (result != null)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (result.code == 200)
+                    {
+                        Msg.UpdateTime = DateTime.Parse(result.data.time);
+                        foreach (var item in result.data.content)
+                        {
+                            pullmsg(item);
+                        }
+                    }
+                });
+                Console.WriteLine($"---Com ---UpdateMsg ---{result.msg}");
             }
         }
 

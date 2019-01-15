@@ -25,7 +25,8 @@ namespace tty.com.Data
             { APIKey.GetInfo,"api/getinfo"},
             { APIKey.Course,"api/course"},
             { APIKey.SetInfo,"api/setinfo" },
-            { APIKey.MsgBoard,"api/msgboard"}
+            { APIKey.MsgBoard,"api/msgboard"},
+            { APIKey.Shared,"api/shared"}
         };
 
         public string this[APIKey key]
@@ -40,6 +41,7 @@ namespace tty.com.Data
         GetInfo,
         Course,
         SetInfo,
-        MsgBoard
+        MsgBoard,
+        Shared
     }
 }

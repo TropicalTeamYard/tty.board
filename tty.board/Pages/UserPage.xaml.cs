@@ -34,10 +34,35 @@ namespace tty.Pages
             SetBinding(UserPage.UserStateProperty, new Binding() { Source = App.Core.Com.User.Current, Path = new PropertyPath("userstate") });
 
             App.Core.Com.LoginCompleted += Com_LoginCompleted;
+            App.Core.Com.ChangeNickNameCompleted += Com_ChangeNickNameCompleted;
             Console.WriteLine("---Window ---UserPage ---SetBinding");
         }
 
+        private void OnUserStateChanged()
+        {
+            if (UserState == UserState.PasswordError)
+            {
+                gridRepair.Visibility = Visibility.Visible;
+                ibarRepairOpen.IsEnabled = true;
+                tbkRepair.Text = "需要修复账户";
+                gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
+                //禁用其他操作
+                ibarChangeInfo.IsEnabled = false;
+                ibarChangeInfo.Background = Brushes.DarkGray;
+            }
+            else
+            {
+                gridRepair.Visibility = Visibility.Collapsed;
 
+                ibarChangeInfo.IsEnabled = true;
+                ibarChangeInfo.Background = UserBrushes.BlueGreen;
+            }
+        }
+        public UserState UserState
+        {
+            get { return (UserState)GetValue(UserStateProperty); }
+            set { SetValue(UserStateProperty, value); }
+        }
         #region 修复账号
         private void Com_LoginCompleted(object sender, MessageEventArgs e)
         {
@@ -64,31 +89,7 @@ namespace tty.Pages
         {
             gridRepairFlyout.Visibility = Visibility.Collapsed;
         }
-        private void OnUserStateChanged()
-        {
-            if (UserState == UserState.PasswordError)
-            {
-                gridRepair.Visibility = Visibility.Visible;
-                ibarRepairOpen.IsEnabled = true;
-                tbkRepair.Text = "需要修复账户";
 
-                //禁用其他操作
-                ibarChangeInfo.IsEnabled = false;
-                ibarChangeInfo.Background = Brushes.DarkGray;
-            }
-            else
-            {
-                gridRepair.Visibility = Visibility.Collapsed;
-
-                ibarChangeInfo.IsEnabled = true;
-                ibarChangeInfo.Background = UserBrushes.BlueGreen;
-            }
-        }
-        public UserState UserState
-        {
-            get { return (UserState)GetValue(UserStateProperty); }
-            set { SetValue(UserStateProperty, value); }
-        }
         private void Pwb1_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (pwb1.Password == "")
@@ -119,11 +120,54 @@ namespace tty.Pages
         {
             gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
         }
-        private void IconBarChangeInfo_Click(object sender, RoutedEventArgs e)
+        private void IconBarChangeInfoOpen_Click(object sender, RoutedEventArgs e)
         {
             gridChangeInfoFlyout.Visibility = Visibility.Visible;
+            tbxNickName.Text = tbkNickName.Text;
+            tbxEmail.Text = tbkEmail.Text;
+            btnChangeInfo.IsEnabled = false;
         }
+        private void Com_ChangeNickNameCompleted(object sender, MessageEventArgs e)
+        {
+            App.Core.Window.SendMessage(e.Msg);
+        }
+        private void CheckChangeInfoInput()
+        {
+            bool isInputValid = true;
 
+            if (tbxNickName.Text == "")
+            {
+                tbxNickName.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                isInputValid = false;
+            }
+            else if (CheckUtil.Nickname(tbkNickName.Text))
+            {
+                tbxNickName.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+            }
+            else
+            {
+                isInputValid = false;
+                tbxNickName.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
+            }
+
+            if (isInputValid)
+            {
+                btnChangeInfo.IsEnabled = true;
+            }
+            else
+            {
+                btnChangeInfo.IsEnabled = false;
+            }
+        }
+        private void tbxNickName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckChangeInfoInput();
+        }
+        private void BtnChangeInfo_Click(object sender, RoutedEventArgs e)
+        {
+            App.Core.Com.ChangeNickName(tbxNickName.Text);
+            gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
+        }
         #endregion
         #region 退出登录
         private void IconButtonExitOpen_Click(object sender, RoutedEventArgs e)
@@ -140,6 +184,5 @@ namespace tty.Pages
             App.Core.Window.NavigateTo(typeof(StartPage));
         }
         #endregion
-
     }
 }

@@ -13,7 +13,7 @@
         <Grid x:Name="GridTitle" Background="Transparent" VerticalAlignment="Top" Height="32">
             <TextBlock Text="Tty Board" Foreground="White" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0"/>
         </Grid>
-        
+
         <!--右侧悬浮框-->
         <Grid Width="340" Margin="0,64,0,0" HorizontalAlignment="Right">
             <Grid.ColumnDefinitions>
@@ -24,7 +24,6 @@
             <Border Margin="10,0" VerticalAlignment="Top" Height="500" Background="#44FFFFFF" CornerRadius="5">
                 <Frame x:Name="rightFrame"/>
             </Border>
-
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
@@ -40,9 +39,27 @@
                     <model:ImageTriggerButtonRound x:Name="ibtnUser" FontSize="16" />
                 </Grid>
             </Grid>
-
-
         </Grid>
-
+        <!--左侧悬浮框-->
+        <Grid Width="400" Margin="0,64,0,0" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="60"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="1" Margin="10,0" VerticalAlignment="Top" Height="600" Background="#44FFFFFF" CornerRadius="5">
+                <Frame x:Name="leftFrame"/>
+            </Border>
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Margin="10">
+                    <Ellipse Fill="#44FFFFFF"/>
+                    <model:IconTriggerButtonRound  FontSize="16" Text="&#xf0e3;" FontFamily="Segoe MDL2 Assets"/>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

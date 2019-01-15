@@ -20,6 +20,10 @@ namespace tty.com.Model
         private string _usertype = "COMMON";
         private string _email = "";
         private string _phone = "";
+       
+
+        public bool IsLoaded { get; set; } = false;
+
         private UserState _userstate = UserState.PasswordError;
 
         public string username { get => _username;set
@@ -82,6 +86,7 @@ namespace tty.com.Model
             }
         }
         public string credit { get; set; }
+        public string md5 { get; set; }
 
         [JsonIgnore]
         public BitmapImage Portrait { get; private set; }
@@ -93,7 +98,7 @@ namespace tty.com.Model
             usertype = other.usertype;
             email = other.email;
             phone = other.phone;
-            
+            IsLoaded = other.IsLoaded;
         }
     }
 

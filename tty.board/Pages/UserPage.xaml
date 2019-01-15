@@ -58,10 +58,10 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="邮箱"/>
-                        <TextBlock Grid.Column="1" Style="{StaticResource DisplayText}" FontSize="12" Foreground="Lavender" HorizontalAlignment="Left"
-                                   Text="www.yyy.edu.cn"/>
+                        <TextBlock x:Name="tbkEmail" Grid.Column="1" Style="{StaticResource DisplayText}" FontSize="12" Foreground="Lavender" HorizontalAlignment="Left"
+                                   Text="yourname@edu.cn"/>
                     </Grid>
-                    <model:IconBar x:Name="ibarChangeInfo" Background="#22AA77" Grid.Row="2" Grid.Column="2" Width="120" HorizontalAlignment="Right" Margin="5" Icon="&#xe70f;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="修改信息" Click="IconBarChangeInfo_Click"/>
+                    <model:IconBar x:Name="ibarChangeInfo" Background="#22AA77" Grid.Row="2" Grid.Column="2" Width="120" HorizontalAlignment="Right" Margin="5" Icon="&#xe70f;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="修改信息" Click="IconBarChangeInfoOpen_Click"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
@@ -110,7 +110,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="昵称"/>
-                        <model:IconTextBox  Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入昵称" />
+                        <model:IconTextBox x:Name="tbxNickName" Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入昵称" TextChanged="tbxNickName_TextChanged"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -118,9 +118,9 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource DisplayText}" Foreground="LightGray" Text="邮箱"/>
-                        <model:IconTextBox  Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入邮箱" />
+                        <model:IconTextBox  x:Name="tbxEmail" Grid.Column="1" IsIconShow="False" Background="#22FFFFFF" Margin="10" Height="40" FontSize="14" Hint="请输入邮箱" />
                     </Grid>
-                    <model:IconBar IsEnabled="False"  Grid.Row="3" Grid.ColumnSpan="2"  Width="120" Margin="5" Icon="&#xe73e;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="提交更改" />
+                    <model:IconBar x:Name="btnChangeInfo" IsEnabled="False"  Grid.Row="3" Grid.ColumnSpan="2"  Width="120" Margin="5" Icon="&#xe73e;" IsOpenHover="True" IsChecked="True" CanAutoCheck="False" Foreground="White" IconFontFamily="Segoe MDL2 Assets" Text="提交更改" Click="BtnChangeInfo_Click"/>
 
                 </Grid>
             </Grid>

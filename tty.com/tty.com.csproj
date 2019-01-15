@@ -48,10 +48,15 @@
   <ItemGroup>
     <Compile Include="Com.cs" />
     <Compile Include="Data\API.cs" />
+    <Compile Include="Data\Msg.cs" />
     <Compile Include="Data\User.cs" />
+    <Compile Include="Model\MsgComment.cs" />
+    <Compile Include="Model\MsgUni.cs" />
+    <Compile Include="Model\Time_Msg.cs" />
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="Model\ResponseModel.cs" />
+    <Compile Include="Model\User_MD5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CheckUtil.cs" />
     <Compile Include="Util\HttpUtil.cs" />
