@@ -13,6 +13,7 @@
                 <ImageBrush ImageSource="{Binding ImageSource,ElementName=IconButtonthis}"/>
             </Ellipse.Fill> 
         </Ellipse>
+        <!--<TextBlock x:Name="TextBlockIcon" Style="{StaticResource IFont}" FontSize="14" Text="&#xe842;"/>-->
         <Ellipse x:Name="TextBlockIcon" Margin="8">
             <Ellipse.Fill >
                 <ImageBrush ImageSource="/Assets/ic_huaji.png"/>

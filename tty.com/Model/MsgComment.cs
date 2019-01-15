@@ -11,6 +11,7 @@
         public string username { get; set; }
         public string time { get; set; }
         public string content { get; set; }
+        //public string nickname { get; set; }
     }
 
 }

@@ -25,8 +25,8 @@ namespace tty.com.Model
         private string _username = "";
         private string _time = "1970-01-01 08:00:00";
         private string _content = "";
-        private string _nickname = "昵称";
-        private BitmapImage _portrait = null;
+        //private string _nickname = "昵称";
+        //private BitmapImage _portrait = null;
 
         public int id { get; set; }
         public string username
@@ -56,25 +56,6 @@ namespace tty.com.Model
             {
                 _content = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(content)));
-            }
-        }
-        public string nickname
-        {
-            get => _nickname;
-            set
-            {
-                _nickname = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nickname)));
-            }
-        }
-        [JsonIgnore]
-        public BitmapImage portrait
-        {
-            get => _portrait;
-            set
-            {
-                _portrait = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(portrait)));
             }
         }
 

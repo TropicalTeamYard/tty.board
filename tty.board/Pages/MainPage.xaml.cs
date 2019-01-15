@@ -30,6 +30,7 @@ namespace tty.Pages
             Console.WriteLine("---Window ---MainPage ---SetBindingPortrait");
 
             rightFrame.NavigateTo(typeof(UserPage));
+            leftFrame.NavigateTo(typeof(MsgPage));
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
