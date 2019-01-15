@@ -26,12 +26,14 @@ namespace tty.Pages
             InitializeComponent();
 
             //设置标题栏，提供移动功能。
-            App.Instance.Window.SetTitleBar(GridTitle);
-            App.Instance.Com.InitializeCompleted += Com_InitializeCompleted;
+            App.Core.Window.SetTitleBar(GridTitle);
+            App.Core.Com.InitializeCompleted += Com_InitializeCompleted;
+
+
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            App.Instance.Com.InitializeAsync();
+            App.Core.Com.InitializeAsync();
         }
 
         private void Com_InitializeCompleted(object sender, MessageEventArgs e)
@@ -44,16 +46,15 @@ namespace tty.Pages
             {
                 ViewStart.Visibility = Visibility.Collapsed;
                 ViewLogin.Visibility = Visibility.Visible;
-                ViewLogin.tbxUser.Text = App.Instance.Com.User.Current.username;
+                ViewLogin.tbxUser.Text = App.Core.Com.User.Current.username;
             }
             else if (data == 2)
             {
-                App.Instance.Window.NavigateTo(typeof(MainPage));
+                App.Core.Window.NavigateTo(typeof(MainPage));
             }
 
-            App.Instance.Window.SendMessage(e.Msg);
+            App.Core.Window.SendMessage(e.Msg);
         }
-
 
         private void UButton_Click(object sender, RoutedEventArgs e)
         {
@@ -65,6 +66,18 @@ namespace tty.Pages
         {
             ViewStart.Visibility = Visibility.Visible;
             ViewLogin.Visibility = Visibility.Collapsed;
+        }
+
+        private void ViewLogin_GoToRegister(object sender, RoutedEventArgs e)
+        {
+            ViewLogin.Visibility = Visibility.Collapsed;
+            ViewRegister.Visibility = Visibility.Visible;
+        }
+
+        private void ViewRegister_GoToLogin(object sender, RoutedEventArgs e)
+        {
+            ViewLogin.Visibility = Visibility.Visible;
+            ViewRegister.Visibility = Visibility.Collapsed;
         }
     }
 }

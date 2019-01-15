@@ -12,35 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using tty.com;
 using tty.com.Util;
 
 namespace tty.Pages
 {
     /// <summary>
-    /// LoginView.xaml 的交互逻辑
+    /// RegisterView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class RegisterView : UserControl
     {
-        public LoginView()
+        public RegisterView()
         {
             InitializeComponent();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            App.Core.Com.LoginCompleted += Com_LoginCompleted;
-        }
+        public event RoutedEventHandler GoToLogin;
 
-        #region 返回
-        public event RoutedEventHandler Back;
-        public event RoutedEventHandler GoToRegister;
-        private void IconButtonRound_Click(object sender, RoutedEventArgs e)
-        {
-            Back?.Invoke(sender, e);
-        }
-        #endregion
-        #region 输入检查
         private bool isInputValid = false;
         private void CheckInput()
         {
@@ -48,9 +35,9 @@ namespace tty.Pages
             if (tbxUser.Text == "")
             {
                 flag = false;
-                tbxUser.Background = new SolidColorBrush( Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                tbxUser.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
             }
-            else if (CheckUtil.Username(tbxUser.Text))
+            else if (CheckUtil.Nickname(tbxUser.Text))
             {
                 tbxUser.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
             }
@@ -75,6 +62,21 @@ namespace tty.Pages
                 pwb1.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
             }
 
+            if (pwb2.Password == "")
+            {
+                flag = false;
+                pwb2.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+            }
+            else if (CheckUtil.Password(pwb2.Password) && pwb1.Password == pwb2.Password)
+            {
+                pwb2.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+            }
+            else
+            {
+                flag = false;
+                pwb2.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
+            }
+
             if (flag)
             {
                 gridLogin.Background = Brushes.DeepSkyBlue;
@@ -96,34 +98,14 @@ namespace tty.Pages
         {
             CheckInput();
         }
-        #endregion
-        #region 登录
-        private void Com_LoginCompleted(object sender, MessageEventArgs e)
+        private void Pwb2_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (e.Status == false)
-            {
-                gridMain.Visibility = Visibility.Visible;
-                gridWait.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                App.Core.Window.NavigateTo(typeof(MainPage));
-            }
-
-            App.Core.Window.SendMessage(e.Msg);
+            CheckInput();
         }
-        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        private void GoToLogin_Click(object sender, RoutedEventArgs e)
         {
-            gridMain.Visibility = Visibility.Collapsed;
-            gridWait.Visibility = Visibility.Visible;
-
-            App.Core.Com.LoginAsync(tbxUser.Text, pwb1.Password);
+            GoToLogin?.Invoke(sender, e);
         }
-        private void ButtonGoToRegister_Click(object sender, RoutedEventArgs e)
-        {
-            GoToRegister?.Invoke(sender,e);
-        }
-        #endregion
 
 
     }

@@ -28,12 +28,12 @@ namespace tty.Pages
         {
             InitializeComponent();
 
-            imgPortrait.SetBinding(Model.ImageTriggerButtonRound.ImageSourceProperty, new Binding() { Source = App.Instance.Com.User.Current, Path = new PropertyPath("Portrait") });
-            tbkNickName.SetBinding(TextBlock.TextProperty, new Binding() { Source = App.Instance.Com.User.Current, Path = new PropertyPath("nickname") });
-            tbkUserName.SetBinding(TextBlock.TextProperty, new Binding() { Source = App.Instance.Com.User.Current, Path = new PropertyPath("username") });
-            SetBinding(UserPage.UserStateProperty, new Binding() { Source = App.Instance.Com.User.Current, Path = new PropertyPath("userstate") });
+            imgPortrait.SetBinding(Model.ImageTriggerButtonRound.ImageSourceProperty, new Binding() { Source = App.Core.Com.User.Current, Path = new PropertyPath("Portrait") });
+            tbkNickName.SetBinding(TextBlock.TextProperty, new Binding() { Source = App.Core.Com.User.Current, Path = new PropertyPath("nickname") });
+            tbkUserName.SetBinding(TextBlock.TextProperty, new Binding() { Source = App.Core.Com.User.Current, Path = new PropertyPath("username") });
+            SetBinding(UserPage.UserStateProperty, new Binding() { Source = App.Core.Com.User.Current, Path = new PropertyPath("userstate") });
 
-            App.Instance.Com.LoginCompleted += Com_LoginCompleted;
+            App.Core.Com.LoginCompleted += Com_LoginCompleted;
             Console.WriteLine("---Window ---UserPage ---SetBinding");
         }
 
@@ -58,7 +58,7 @@ namespace tty.Pages
             ibarRepairOpen.IsEnabled = false;
             tbkRepair.Text = "正在修复";
 
-            App.Instance.Com.LoginAsync(App.Instance.Com.User.Current.username,pwb1.Password);
+            App.Core.Com.LoginAsync(App.Core.Com.User.Current.username,pwb1.Password);
         }
         private void IconButtonRepairBack_Click(object sender, RoutedEventArgs e)
         {
@@ -139,8 +139,8 @@ namespace tty.Pages
         }
         private void IconButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            App.Instance.Com.ExitLogin();
-            App.Instance.Window.NavigateTo(typeof(StartPage));
+            App.Core.Com.ExitLogin();
+            App.Core.Window.NavigateTo(typeof(StartPage));
         }
         #endregion
 

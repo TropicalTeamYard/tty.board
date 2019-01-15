@@ -40,7 +40,7 @@ namespace tty
             //        return false;
             //    }
             //}));
-            App.Instance.LoadWindowSettings();
+            App.Core.LoadWindowSettings();
             //App.LoadWindowSettingsAsync();
 
             SizeChangeBorderHelper = new SizeChangeBorderHelper(this, BorderMoveTop, BorderMoveTopLeft, BorderMoveTopRight, BorderMoveLeft, BorderMoveRight, BorderMoveButtom, BorderMoveButtomLeft, BorderMoveButtomRight);
@@ -49,9 +49,9 @@ namespace tty
                 windowLocation = new Point(Left / ScreenSize.Width, Top / ScreenSize.Height);
                 windowSize = new Size(Width / ScreenSize.Width, Height / ScreenSize.Height);
             };
-            if (App.Instance.Com == null)
+            if (App.Core.Com == null)
             {
-                App.Instance.Com = new Com(Dispatcher);
+                App.Core.Com = new Com(Dispatcher);
             }
             //{debug}
             NavigateTo(typeof(StartPage));
@@ -275,8 +275,8 @@ namespace tty
 
         private void IconButtonCloseWindow_Click(object sender, RoutedEventArgs e)
         {
-            App.Instance.SaveWindowSettings();
-            App.Instance.SaveUserSettings();
+            App.Core.SaveWindowSettings();
+            App.Core.SaveUserSettings();
             Close();
         }
         private void IconButtonFullScreen_Click(object sender, RoutedEventArgs e)

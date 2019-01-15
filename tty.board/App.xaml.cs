@@ -21,18 +21,22 @@ namespace tty
         }
         public void SaveWindowSettings()
         {
-
+          
         }
         public void SaveUserSettings()
         {
-            App.Instance.Com.Finish();
+            App.Core.Com.Finish();
         }
 
-        public static App Instance => (App)Current;
+        public Com Com { get; set; }
+
+        public static App Core => (App)Current;
         /// <summary>
         /// 获取程序的主窗体.
         /// </summary>
         public MainWindow Window => (MainWindow)Current.MainWindow;
-        public Com Com { get; set; }
+
+
+
     }
 }
