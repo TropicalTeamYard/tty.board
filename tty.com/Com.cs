@@ -604,7 +604,7 @@ namespace tty.com
                     if (selected.Count() == 0)
                     {
                         await GetSharedUserInfoAsync(new string[] { selected.First() });
-                    }
+                    }    
 
                     Dispatcher.Invoke(() =>
                     {

@@ -54,10 +54,13 @@ namespace tty.Pages
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
-            btnSend.IsEnabled = false;
-            btnSend.Text = "正在发送";
+            if (App.Core.Com.User.Current.userstate == com.Model.UserState.Success)
+            {
+                btnSend.IsEnabled = false;
+                btnSend.Text = "正在发送";
 
-            App.Core.Com.AddMsgAsync(tbxSend.Text);
+                App.Core.Com.AddMsgAsync(tbxSend.Text);
+            }
         }
         #endregion
 
