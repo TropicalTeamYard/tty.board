@@ -46,9 +46,14 @@ namespace tty.Model
             if (!string.IsNullOrEmpty(UserName))
             {
                 UserInfo userInfo = App.Core.Com.GetUserInfo(UserName);
-                tbkNickName.SetBinding(TextBlock.TextProperty, new Binding() { Source = userInfo, Path = new PropertyPath("nickname") });
-                itbPortrait.SetBinding(ImageTriggerButtonRound.ImageSourceProperty, new Binding() { Source = userInfo, Path = new PropertyPath("Portrait") });
-                tbkUserName.Text = userInfo.username;
+
+                if (userInfo!=null)
+                {
+                    tbkNickName.SetBinding(TextBlock.TextProperty, new Binding() { Source = userInfo, Path = new PropertyPath("nickname") });
+                    itbPortrait.SetBinding(ImageTriggerButtonRound.ImageSourceProperty, new Binding() { Source = userInfo, Path = new PropertyPath("Portrait") });
+                    tbkUserName.Text = userInfo.username;
+
+                }
             }
         }
         private void OnCommentsChanged()
