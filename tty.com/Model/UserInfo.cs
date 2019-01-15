@@ -98,6 +98,11 @@ namespace tty.com.Model
             usertype = other.usertype;
             email = other.email;
             phone = other.phone;
+            // SOLOVED BUG 复制信息不完全导致无法正确显示头像。
+            //userstate = other.userstate;
+            portrait = other.portrait;
+            //credit = other.credit;
+            md5 = other.md5;
             IsLoaded = other.IsLoaded;
         }
     }

@@ -34,12 +34,12 @@ namespace tty.com
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (User.Current.userstate == UserState.Success)
+            if (User.Current != null && User.Current.userstate == UserState.Success)
             {
                 UpdateUserInfoAsync();
                 UpdateMsgAsync();
-                UpdateSharedInfoAsync();
             }
+            UpdateSharedInfoAsync();
             Console.WriteLine("---Com ---Timer ---Raised");
         }
         private void Restart()
@@ -71,35 +71,33 @@ namespace tty.com
                 InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
             });
         }
-        private async void AddSharedInfoAsync(UserInfo userInfo)
+        private void AddSharedInfoAsync(UserInfo userInfo)
         {
-            await Task.Run(() =>
+            #region 提交信息
+            bool flag = false;
+            if (User.Users != null)
             {
-                #region 提交信息
-                bool flag = false;
-                if (User.Users != null)
+                var selected = from item in User.Users
+                               where item.username == userInfo.username
+                               select item;
+                if (selected.Count() > 0)
                 {
-                    var selected = from item in User.Users
-                                   where item.username == userInfo.username
-                                   select item;
-                    if (selected.Count() > 0)
-                    {
-                        var user = selected.First();
-                        user.CopyFrom(userInfo);
-                        user.IsLoaded = true;
-                        flag = true;
-                    }
+                    var user = selected.First();
+                    user.CopyFrom(userInfo);
+                    user.IsLoaded = true;
+                    flag = true;
                 }
-                if (!flag)
-                {
-                    List<UserInfo> users = User.Users == null ? new List<UserInfo>() : User.Users.ToList();
-                    userInfo.IsLoaded = true;
-                    users.Add(userInfo);
+            }
+            if (!flag)
+            {
+                List<UserInfo> users = User.Users == null ? new List<UserInfo>() : User.Users.ToList();
+                userInfo.IsLoaded = true;
+                users.Add(userInfo);
 
-                    User.Users = users.ToArray();
-                }
-                #endregion
-            });
+                User.Users = users.ToArray();
+            }
+            #endregion
+
         }
         private void pullmsg(MsgUni msg)
         {
@@ -194,7 +192,8 @@ namespace tty.com
                         try
                         {
                             var str = File.ReadAllText(msgpath);
-                            Dispatcher.Invoke(() => {
+                            Dispatcher.Invoke(() =>
+                            {
                                 Msg = JsonConvert.DeserializeObject<Msg>(str);
                             });
                         }
@@ -328,7 +327,8 @@ namespace tty.com
                 }
                 catch (Exception ex)
                 {
-                    Dispatcher.Invoke(() => {
+                    Dispatcher.Invoke(() =>
+                    {
                         RegisterCompleted?.Invoke(this, new MessageEventArgs(false, $"注册失败 {ex.Message}"));
                     });
                     Console.WriteLine($"---Com ---Register ---{ex.Message}");
@@ -369,7 +369,8 @@ namespace tty.com
                     }
                     catch (Exception ex)
                     {
-                        Dispatcher.Invoke(() => {
+                        Dispatcher.Invoke(() =>
+                        {
                             LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"自动登录失败 {ex.Message}"));
                         });
                     }
@@ -413,8 +414,11 @@ namespace tty.com
             {
                 try
                 {
-                    var postdata = $"type=base&credit={User.Current.credit}";
-                    result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
+                    if (User.Current!= null && User.Current.credit != null)
+                    {
+                        var postdata = $"type=base&credit={User.Current.credit}";
+                        result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -463,7 +467,8 @@ namespace tty.com
                 }
                 catch (Exception ex)
                 {
-                    Dispatcher.Invoke(() => {
+                    Dispatcher.Invoke(() =>
+                    {
                         ChangeNickNameCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                     });
                     Console.WriteLine($"---Com ---ChangeNickName ---{ex.Message}");
@@ -544,7 +549,7 @@ namespace tty.com
                     try
                     {
                         var nk = from item in User.Users where item.IsLoaded == true select item;
-                        var postdata = $"type=usermd5&query={JsonConvert.SerializeObject(nk.ToArray().Select((m)=>m.username))}";
+                        var postdata = $"type=usermd5&query={JsonConvert.SerializeObject(nk.ToArray().Select((m) => m.username))}";
                         result = JsonConvert.DeserializeObject<ResponceModel<User_MD5[]>>(
                                 HttpUtil.post(API[APIKey.Shared], postdata)
                             );
@@ -577,11 +582,12 @@ namespace tty.com
                 }
             }
         }
-        public async void AddMsgAsync(string content,BitmapImage pic = null)
+        public async void AddMsgAsync(string content, BitmapImage pic = null)
         {
             ResponceModel<MsgUni> result = null;
 
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 try
                 {
                     var postdata = $"method=add&credit={User.Current.credit}&content={content}";
@@ -595,7 +601,7 @@ namespace tty.com
                     });
                 }
             });
-            if (result!=null)
+            if (result != null)
             {
                 if (result.code == 200)
                 {
@@ -604,7 +610,7 @@ namespace tty.com
                     if (selected.Count() == 0)
                     {
                         await GetSharedUserInfoAsync(new string[] { selected.First() });
-                    }    
+                    }
 
                     Dispatcher.Invoke(() =>
                     {
@@ -615,10 +621,11 @@ namespace tty.com
                 }
                 else
                 {
-                    Dispatcher.Invoke(() => {
+                    Dispatcher.Invoke(() =>
+                    {
                         AddMsgCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                     });
-                } 
+                }
             }
 
         }
@@ -655,14 +662,18 @@ namespace tty.com
                         var except = users.Except(User.Users.Select((m) => m.username));
                         if (except.Count() > 0)
                         {
-                            var list = User.Users.ToList();
-                            foreach (var item in except)
+                            Dispatcher.Invoke(() =>
                             {
-                                list.Add(new UserInfo() { username = item });
-                            }
-                            User.Users = list.ToArray();
+                                var list = User.Users.ToList();
+                                foreach (var item in except)
+                                {
+                                    list.Add(new UserInfo() { username = item });
+                                }
+                                User.Users = list.ToArray();
+                            });
 
                             await GetSharedUserInfoAsync(except);
+
                         }
 
 
