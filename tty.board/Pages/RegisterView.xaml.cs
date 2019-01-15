@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using tty.com.Util;
+using tty.com;
 
 namespace tty.Pages
 {
@@ -24,10 +25,13 @@ namespace tty.Pages
         public RegisterView()
         {
             InitializeComponent();
+            App.Core.Com.RegisterCompleted += Com_RegisterCompleted;
         }
-
+        
         public event RoutedEventHandler GoToLogin;
+        public event RoutedEventHandler ToStart;
 
+        #region 输入检查
         private bool isInputValid = false;
         private void CheckInput()
         {
@@ -102,10 +106,45 @@ namespace tty.Pages
         {
             CheckInput();
         }
+        #endregion
+
         private void GoToLogin_Click(object sender, RoutedEventArgs e)
         {
             GoToLogin?.Invoke(sender, e);
         }
+
+        #region 注册
+        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            gridMain.Visibility = Visibility.Collapsed;
+            gridWait.Visibility = Visibility.Visible;
+
+            App.Core.Com.RegisterAsync(tbxUser.Text, pwb1.Password);
+        }
+        private void Com_RegisterCompleted(object sender, MessageEventArgs e)
+        {
+            gridWait.Visibility = Visibility.Collapsed;
+            if (e.Status)
+            {
+                var username = (string)e.Data;
+
+                tbkUserName.Text = username;
+                tbkNickName.Text = tbxUser.Text;
+
+                gridCompleted.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                gridMain.Visibility = Visibility.Visible;
+            }
+
+            App.Core.Window.SendMessage(e.Msg);
+        }
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            ToStart?.Invoke(sender, e);
+        }
+        #endregion
 
 
     }

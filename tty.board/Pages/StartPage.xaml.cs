@@ -79,5 +79,12 @@ namespace tty.Pages
             ViewLogin.Visibility = Visibility.Visible;
             ViewRegister.Visibility = Visibility.Collapsed;
         }
+
+        private void ViewRegister_ToStart(object sender, RoutedEventArgs e)
+        {
+            ViewRegister.Visibility = Visibility.Collapsed;
+            ViewLogin.Visibility = Visibility.Visible;
+            ViewLogin.tbxUser.Text = ViewRegister.tbkUserName.Text;
+        }
     }
 }

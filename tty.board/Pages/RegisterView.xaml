@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:tty.Pages"
              xmlns:model="clr-namespace:tty.Model"
              mc:Ignorable="d" 
-             d:DesignWidth="320">
+             d:DesignWidth="320" d:DesignHeight="295">
     <Grid>
-        <Grid x:Name="gridMain">
+        <Grid x:Name="gridMain" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="180"/>
                 <RowDefinition Height="15"/>
@@ -44,7 +44,7 @@
                 </Grid>
             </Grid>
             <Grid x:Name="gridLogin" Grid.Row="2" Width="160" Margin="0,5" Background="#AAAAAA">
-                <model:UButton x:Name="btnLogin" IsEnabled="False" >
+                <model:UButton x:Name="btnLogin" IsEnabled="False" Click="BtnLogin_Click">
                     <TextBlock  Grid.Column="1" Style="{StaticResource DisplayText}" Text="注册"/>
                 </model:UButton>
             </Grid>
@@ -61,7 +61,40 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <model:ProgressRing Height="30" Width="30" IsActive="True"/>
-                <TextBlock Grid.Column="1" Style="{StaticResource  DisplayText}" FontSize="14" Text="正在登录"/>
+                <TextBlock Grid.Column="1" Style="{StaticResource  DisplayText}" FontSize="14" Text="正在注册"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="gridCompleted" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition />
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Width="Auto" HorizontalAlignment="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="Hi,"/>
+                <TextBlock x:Name="tbkNickName" Grid.Column="1" Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="StringBuilder"/>
+            </Grid>
+            <Grid Grid.Row="2" Width="Auto" HorizontalAlignment="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="你注册的用户名为: "/>
+                <TextBlock x:Name="tbkUserName" Grid.Column="1" Style="{StaticResource DisplayText}" Foreground="YellowGreen" FontWeight="Bold"  Text="10088"/>
+            </Grid>
+            <TextBlock Grid.Row="3" Style="{StaticResource DisplayText}" Text="请牢记你的用户名，敬请开始吧。" FontSize="12" Foreground="DarkGray"/>
+            <Grid Grid.Row="5" Width="160" Margin="5" Background="#22AA88">
+                <model:UButton Click="ButtonStart_Click">
+                    <TextBlock  Grid.Column="1" Style="{StaticResource DisplayText}" Text="开启旅程"/>
+                </model:UButton>
             </Grid>
         </Grid>
     </Grid>

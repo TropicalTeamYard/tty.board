@@ -238,5 +238,8 @@
   <ItemGroup>
     <Resource Include="Assets\sampleicon.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ic_huaji.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

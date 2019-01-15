@@ -43,7 +43,7 @@
                 </Grid>
             </Grid>
             <local:LoginView x:Name="ViewLogin" Visibility="Collapsed" Back="ViewLogin_Back" GoToRegister="ViewLogin_GoToRegister"/>
-            <local:RegisterView x:Name="ViewRegister" Visibility="Collapsed"  GoToLogin="ViewRegister_GoToLogin"/>
+            <local:RegisterView x:Name="ViewRegister" Visibility="Collapsed"  GoToLogin="ViewRegister_GoToLogin" ToStart="ViewRegister_ToStart"/>
         </Grid>
         
     </Grid>

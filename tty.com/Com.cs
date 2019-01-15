@@ -26,7 +26,7 @@ namespace tty.com
         private string userpath => Cache + @"\User.json";
         private DispatcherTimer Timer { get; } = new DispatcherTimer()
         {
-            Interval = TimeSpan.FromMinutes(10),
+            Interval = TimeSpan.FromSeconds(10),
             IsEnabled = false
         };
 
@@ -38,6 +38,35 @@ namespace tty.com
             }
             Console.WriteLine("---Com ---Timer ---Raised");
         }
+        private void Restart()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                int data = 0;
+                string msg = "";
+
+                //说明没有登录
+                if (User.Current == null || User.Current.username == "" || User.Current.username == null)
+                {
+                    data = 0;
+                    msg = "";
+                }
+                else if (User.Current.credit == null || User.Current.credit == "")
+                {
+                    data = 1;
+                    msg = "";
+                }
+                else
+                {
+                    data = 2;
+                    AutoLoginAsync();
+                    msg = "";
+                }
+
+                Console.WriteLine($"---Com ---Initialize ---{msg}");
+                InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
+            });
+        }
 
         public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.board";
         public API API = new API();
@@ -47,6 +76,8 @@ namespace tty.com
 
         public event EventHandler<MessageEventArgs> InitializeCompleted;
         public event EventHandler<MessageEventArgs> LoginCompleted;
+        public event EventHandler<MessageEventArgs> RegisterCompleted;
+        public event EventHandler<MessageEventArgs> ChangeNickNameCompleted;
 
         /// <summary>
         /// 初始化
@@ -58,6 +89,7 @@ namespace tty.com
                 if (!IsLoaded)
                 {
                     Timer.Tick += Timer_Tick;
+                    Timer.IsEnabled = true;
                     //载入文件
                     if (File.Exists(userpath))
                     {
@@ -110,37 +142,6 @@ namespace tty.com
                 }
             });
         }
-        private void Restart()
-        {
-            Dispatcher.Invoke(() => {
-                int data = 0;
-                string msg = "";
-
-                //说明没有登录
-                if (User.Current == null || User.Current.username == "" || User.Current.username == null)
-                {
-                    data = 0;
-                    msg = "";
-                }
-                else if (User.Current.credit == null || User.Current.credit == "")
-                {
-                    data = 1;
-                    msg = "";
-                }
-                else
-                {
-                    data = 2;
-                    AutoLoginAsync();
-                    msg = "";
-                }
-
-                Console.WriteLine($"---Com ---Initialize ---{msg}");
-                InitializeCompleted?.Invoke(this, new MessageEventArgs(true, msg, data));
-            });
-        }
-        /// <summary>
-        /// 启用自动定时刷新状态
-        /// </summary>
         public void Finish()
         {
             try
@@ -154,22 +155,33 @@ namespace tty.com
             string data = JsonConvert.SerializeObject(User);
             File.WriteAllText(userpath, data);
         }
-
         public async void LoginAsync(string username, string password)
         {
-            try
+
+            ResponceModel<UserInfo> result = null;
+            // 请求数据。
+            await Task.Run(() =>
             {
-                ResponceModel<UserInfo> result = null;
-                // 请求数据。
-                await Task.Run(() =>
+                try
                 {
                     var postdata = $"method=login&username={username}&password={ToolUtil.MD5Encrypt32(password)}&devicetype=pc";
                     result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
-                        HttpUtil.post(API[APIKey.User], postdata)
-                        );
-                });
+                            HttpUtil.post(API[APIKey.User], postdata)
+                            );
+                }
+                catch (Exception ex)
+                {
+                    Task.Delay(1000);
+                    Dispatcher.Invoke(() =>
+                    {
+                        LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"登录操作失败 {ex.Message}"));
+                    });
+                    Console.WriteLine($"---Com ---Login ---{ex.Message}");
+                }
+            });
 
-
+            if (result != null)
+            {
                 if (result.code == 200)
                 {
                     Dispatcher.Invoke(() =>
@@ -197,34 +209,75 @@ namespace tty.com
                 }
 
                 Console.WriteLine($"---Com ---Login ---{result.msg}");
+
             }
-            catch (Exception ex)
+        }
+        public async void RegisterAsync(string nickname, string password)
+        {
+
+            ResponceModel<UserInfo> result = null;
+
+            await Task.Run(() =>
             {
-                await Task.Delay(1000);
+                try
+                {
+                    var postdata = $"method=register2&nickname={nickname}&password={ToolUtil.MD5Encrypt32(password)}";
+                    result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
+                            HttpUtil.post(API[APIKey.User], postdata)
+                                );
+                }
+                catch (Exception ex)
+                {
+                    RegisterCompleted?.Invoke(this, new MessageEventArgs(false, $"注册失败 {ex.Message}"));
+                    Console.WriteLine($"---Com ---Register ---{ex.Message}");
+
+                    return;
+                }
+            });
+
+            if (result != null)
+            {
                 Dispatcher.Invoke(() =>
                 {
-                    LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"登录操作失败 {ex.Message}"));
+                    if (result.code == 200)
+                    {
+                        RegisterCompleted?.Invoke(this, new MessageEventArgs(true, result.msg, result.data.username));
+                    }
+                    else
+                    {
+                        RegisterCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
+                    }
                 });
-                Console.WriteLine($"---Com ---Login ---{ex.Message}");
+
+                Console.WriteLine($"---Com ---Register ---{result.msg}");
             }
         }
         public async void AutoLoginAsync()
         {
-            try
-            {
-                ResponceModel<UserInfo> result = null;
+            ResponceModel<UserInfo> result = null;
 
-                if (User.Current.credit != null && User.Current.credit != "")
+            if (User.Current.credit != null && User.Current.credit != "")
+            {
+                await Task.Run(() =>
                 {
-                    await Task.Run(() =>
+                    try
                     {
                         var postdata = $"method=autologin&credit={User.Current.credit}";
                         result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
-                            HttpUtil.post(API[APIKey.User], postdata)
-                            );
-                    });
+                                HttpUtil.post(API[APIKey.User], postdata)
+                                );
+                    }
+                    catch (Exception ex)
+                    {
+                        LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"自动登录失败 {ex.Message}"));
+
+                        return;
+                    }
+                });
 
 
+                if (result != null)
+                {
                     Dispatcher.Invoke(() =>
                     {
                         if (result.code == 200)
@@ -240,33 +293,37 @@ namespace tty.com
                             User.Current.userstate = UserState.PasswordError;
                             LoginCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                         }
-                        
+
                         Console.WriteLine($"---Com ---AutoLogin ---{result.msg}");
                     });
                 }
-                else
-                {
-                    Console.WriteLine($"---Com ---AutoLogin ---用户凭证不存在");
-                }
             }
-            catch (Exception ex)
+            else
             {
-                LoginCompleted?.Invoke(this, new MessageEventArgs(false, $"自动登录失败 {ex.Message}"));
+                Console.WriteLine($"---Com ---AutoLogin ---用户凭证不存在");
             }
+
         }
         public async void UpdateUserInfoAsync()
         {
-            try
-            {
-                ResponceModel<UserInfo> result = null;
+            ResponceModel<UserInfo> result = null;
 
-                await Task.Run(() =>
+            await Task.Run(() =>
+            {
+                try
                 {
                     var postdata = $"type=base&credit={User.Current.credit}";
                     result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
-                });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"---Com ---UpdateUserInfo ---{ex.Message}");
 
-
+                    return;
+                }
+            });
+            if (result != null)
+            {
                 Dispatcher.Invoke(() =>
                 {
                     if (result.code == 200)
@@ -288,15 +345,48 @@ namespace tty.com
 
                 Console.WriteLine($"---Com ---UpdateUserInfo ---{result.msg}");
             }
-            catch (Exception ex)
+
+        }
+        public async void ChangeNickName(string nickname)
+        {
+            ResponceModel result = null;
+            await Task.Run(() =>
             {
-                Console.WriteLine($"---Com ---UpdateUserInfo ---{ex.Message}");
+                try
+                {
+                    var postdata = $"method=changenickname&credit={User.Current.credit}&nickname={nickname}";
+                    result = JsonConvert.DeserializeObject<ResponceModel>(
+                        HttpUtil.post(API[APIKey.User], postdata)
+                            );
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            });
+
+            if (result != null)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (result.code == 200)
+                    {
+                        User.Current.userstate = UserState.Success;
+                        User.Current.nickname = nickname;
+                        ChangeNickNameCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
+                    }
+                    else
+                    {
+                        User.Current.userstate = UserState.PasswordError;
+                        ChangeNickNameCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
+                    }
+                });
             }
         }
+
         public void ExitLogin()
         {
             User.Current.credit = null;
-            //Finish();
         }
     }
 }

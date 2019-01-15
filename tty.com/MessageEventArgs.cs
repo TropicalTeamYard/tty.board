@@ -19,4 +19,11 @@ namespace tty.com
         public string Msg { get; private set; }
         public object Data { get; private set; }
     }
+
+    public enum MessageStatus
+    {
+        Success,
+        Failed,
+        Error,
+    }
 }

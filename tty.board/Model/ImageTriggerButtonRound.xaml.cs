@@ -145,14 +145,6 @@ namespace tty.Model
 
         protected override void OnColorStyleChanged()
         {
-            if (ColorStyle == WindowColorStyle.Dark)
-            {
-                TextBlockIcon.Foreground = Brushes.White;
-            }
-            else
-            {
-                TextBlockIcon.Foreground = Brushes.Black;
-            }
             if (IsChecked)
             {
                 elp1.Fill = ThemeBrush;

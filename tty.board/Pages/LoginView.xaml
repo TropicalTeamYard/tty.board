@@ -31,7 +31,7 @@
                     </Grid.RowDefinitions>
                     <Grid Margin="10">
                         <Ellipse Fill="#44FFFFFF"/>
-                        <model:ImageTriggerButtonRound FontSize="16" FontFamily="Segoe MDL2 Assets"/>
+                        <model:ImageTriggerButtonRound FontSize="16" FontFamily="Segoe MDL2 Assets" CanAutoCheck="False"/>
                     </Grid>
                     <model:IconTextBox x:Name="tbxUser" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请输入账号" TextChanged="TbxUser_TextChanged"/>
                     <Grid Grid.Row="1"  Margin="10">

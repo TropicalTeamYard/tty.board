@@ -74,14 +74,14 @@ namespace tty.Pages
 
                 //禁用其他操作
                 ibarChangeInfo.IsEnabled = false;
-                ibarChangeInfo.ThemeBrush = Brushes.DarkGray;
+                ibarChangeInfo.Background = Brushes.DarkGray;
             }
             else
             {
                 gridRepair.Visibility = Visibility.Collapsed;
 
                 ibarChangeInfo.IsEnabled = true;
-                ibarChangeInfo.ThemeBrush = UserBrushes.BlueGreen;
+                ibarChangeInfo.Background = UserBrushes.BlueGreen;
             }
         }
         public UserState UserState
@@ -94,20 +94,17 @@ namespace tty.Pages
             if (pwb1.Password == "")
             {
                 ibarRepair.IsEnabled = false;
-                ibarRepair.ThemeBrush = new SolidColorBrush(Color.FromRgb(0xaa, 0xaa, 0xaa));
                 pwb1.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
             }
             else if (CheckUtil.Password(pwb1.Password))
             {
                 ibarRepair.IsEnabled = true;
-                ibarRepair.ThemeBrush = UserBrushes.BlueGreen;
                 pwb1.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
 
             }
             else
             {
                 ibarRepair.IsEnabled = false;
-                ibarRepair.ThemeBrush = new SolidColorBrush(Color.FromRgb(0xaa, 0xaa, 0xaa));
                 pwb1.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
             }
         }
