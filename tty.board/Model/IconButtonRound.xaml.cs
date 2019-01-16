@@ -34,14 +34,24 @@ namespace tty.Model
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
-
         public bool IsSpecialColor
         {
             get { return (bool)GetValue(IsSpecialColorProperty); }
             set { SetValue(IsSpecialColorProperty, value); }
         }
-        public static readonly DependencyProperty IsSpecialColorProperty =
-            DependencyProperty.Register("IsSpecialColor", typeof(bool), typeof(IconButtonRound), new PropertyMetadata(false));
+
+
+        protected override void OnColorStyleChanged()
+        {
+            if (ColorStyle == WindowColorStyle.Dark)
+            {
+                TextBlockIcon.Foreground = Brushes.White;
+            }
+            else
+            {
+                TextBlockIcon.Foreground = Brushes.Black;
+            }
+        }
 
         private void IconButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -119,18 +129,7 @@ namespace tty.Model
         //以下为静态成员
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(IconButtonRound), new PropertyMetadata(""));
-
-        protected override void OnColorStyleChanged()
-        {
-            if (ColorStyle == WindowColorStyle.Dark)
-            {
-                TextBlockIcon.Foreground = Brushes.White;
-            }
-            else
-            {
-                TextBlockIcon.Foreground = Brushes.Black;
-            }
-        }
-
+        public static readonly DependencyProperty IsSpecialColorProperty =
+            DependencyProperty.Register("IsSpecialColor", typeof(bool), typeof(IconButtonRound), new PropertyMetadata(false));
     }
 }

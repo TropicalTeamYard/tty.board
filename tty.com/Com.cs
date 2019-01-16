@@ -712,6 +712,8 @@ namespace tty.com
         public void ExitLogin()
         {
             User.Current.credit = null;
+            User.Current.portrait = "";
+            User.Current.nickname = "";
         }
     }
 }

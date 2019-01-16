@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="48" Background="Transparent" MouseMove="IconButton_MouseMove" MouseLeave="IconButton_MouseLeave" MouseDown="IconButton_MouseDown" MouseUp="IconButton_MouseUp">
     <Grid>
+        <Ellipse x:Name="elp0" Fill="{Binding ThemeBrush, ElementName=IconButtonthis}"/>
         <Ellipse x:Name="elp1" />
         <TextBlock x:Name="TextBlockIcon" Style="{StaticResource IFont}" FontSize="{Binding FontSize, ElementName=IconButtonthis}" Text="{Binding Text, ElementName=IconButtonthis}" />
     </Grid>
