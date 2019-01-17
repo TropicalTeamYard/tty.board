@@ -19,16 +19,34 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
-                    <model:ImageTriggerButtonRound x:Name="imgPortrait" CanAutoCheck="False" Margin="5" ImageSource="/Assets/sampleicon.jpg"/>
+                    <model:ImageTriggerButtonRound 
+                        x:Name="imgPortrait" 
+                        CanAutoCheck="False" 
+                        Margin="5" />
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name="tbkNickName" Style="{StaticResource DisplayText}" Text="wcf" FontWeight="Bold" VerticalAlignment="Bottom"/>
-                        <TextBlock x:Name="tbkUserName" Grid.Row="1" Style="{StaticResource DisplayText}" VerticalAlignment="Top" Margin="0,5,0,0" Text="10088" FontSize="12" Foreground="Gray"/>
+                        <TextBlock 
+                            x:Name="tbkNickName" 
+                            Style="{StaticResource DisplayText}" 
+                            Text="wcf" 
+                            FontWeight="Bold" 
+                            VerticalAlignment="Bottom"/>
+                        <TextBlock 
+                            x:Name="tbkUserName" 
+                            Grid.Row="1" 
+                            Style="{StaticResource DisplayText}" VerticalAlignment="Top" Margin="0,5,0,0" Text="10088" FontSize="12" Foreground="Gray"/>
                     </Grid>
-                    <model:IconButtonRound Grid.Column="2" Width="40" Height="40" ThemeBrush="Orange" Text="&#xe7e8;" FontSize="14" Click="IconButtonExitOpen_Click"/>
+                    <model:IconButtonRound 
+                        Grid.Column="2" 
+                        Width="40" 
+                        Height="40" 
+                        ThemeBrush="#DD3333" 
+                        Text="&#xe7e8;" 
+                        FontSize="14" 
+                        Click="IconButtonExitOpen_Click"/>
                     </Grid>
                 <Grid x:Name="gridRepair" Visibility="Collapsed" Height="40">
                     <Grid.ColumnDefinitions>
@@ -88,7 +106,7 @@
                     </Grid>
                     <model:IconBar
                         Style="{StaticResource IIconBar}"
-                        x:Name="ibarChangeInfo"
+                        x:Name="ibarChangeInfoOpen"
                         Grid.Row="2" 
                         Grid.Column="2" 
                         Width="120" 
@@ -98,6 +116,7 @@
                         Text="修改信息" 
                         Click="IconBarChangeInfoOpen_Click"/>
                     <model:IconBar 
+                        x:Name="ibarChangePwOpen"
                         Style="{StaticResource IIconBar}"
                         Grid.Row="3" 
                         Grid.Column="2" 
@@ -106,7 +125,8 @@
                         HorizontalAlignment="Right" 
                         Margin="5" 
                         Icon="&#xe8d7;" 
-                        Text="修改密码"/>
+                        Text="修改密码"
+                        Click="IconBarChangePwOpen_Click"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
@@ -216,7 +236,7 @@
                     </Grid>
                     <model:IconBar 
                         Style="{StaticResource IIconBar}"
-                        x:Name="btnChangeInfo" 
+                        x:Name="ibarChangeInfo" 
                         IsEnabled="False"  
                         Grid.Row="3" 
                         Grid.ColumnSpan="2"  
@@ -230,17 +250,19 @@
         </Grid>
         <Grid x:Name="gridChangePwFlyout" 
               Background="#99000000" 
-              Visibility="Collapsed" >
+              Visibility="Collapsed">
             <Grid Height="300">
                 <model:IconButtonRound 
-                        Width="40" 
-                        Height="40" 
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="10,0,0,0"
-                        Style="{StaticResource IIconButtonRound}" 
-                        Text="&#xe72b;" />
-                <Grid Height="240" VerticalAlignment="Top" Margin="0,60,0,0">
+                    Width="40" 
+                    Height="40" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10,0,0,0"
+                    Text="&#xe72b;" 
+                    Click="IconButtonChangePwBack_Click"/>
+                <Grid Height="240" 
+                      VerticalAlignment="Top"
+                      Margin="0,60,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"/>
                         <ColumnDefinition Width="7*"/>
@@ -267,20 +289,27 @@
                         Margin="10"
                         Text="&#xe8d7;"/>
                     <model:IconPasswordBox  
+                        x:Name="pwb_1"
                         Style="{StaticResource IIconPasswordBox}"
                         Grid.Column="1" 
-                        Hint="请输入旧密码" />
-                    <model:IconPasswordBox  
+                        Hint="请输入旧密码" 
+                        PasswordChanged="pwbChangPw_PasswordChanged"/>
+                    <model:IconPasswordBox 
+                        x:Name="pwb_2"
                         Style="{StaticResource IIconPasswordBox}"
                         Grid.Column="1" 
                         Grid.Row="1" 
-                        Hint="请输入新密码" />
-                    <model:IconPasswordBox  
+                        Hint="请输入新密码" 
+                        PasswordChanged="pwbChangPw_PasswordChanged"/>
+                    <model:IconPasswordBox 
+                        x:Name="pwb_3"
                         Style="{StaticResource IIconPasswordBox}"
                         Grid.Column="1" 
                         Grid.Row="2" 
-                        Hint="请再次输入新密码" />
+                        Hint="请再次输入新密码" 
+                        PasswordChanged="pwbChangPw_PasswordChanged"/>
                     <model:IconBar 
+                        x:Name="ibarChangePw"
                         Style="{StaticResource IIconBar}" 
                         Grid.Row="4" 
                         Grid.ColumnSpan="2" 
@@ -288,7 +317,8 @@
                         Margin="5" 
                         IsEnabled="False" 
                         Icon="&#xe8d7;"  
-                        Text="修改密码"  />
+                        Text="修改密码"
+                        Click="IbarChangePw_Click"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -310,7 +340,7 @@
                     Grid.Row="2" 
                     Width="40"
                     Height="40" 
-                    ThemeBrush="Orange" 
+                    ThemeBrush="#DD3333" 
                     Text="&#xe7e8;" 
                     Click="IconButtonExit_Click"/>
             </Grid>

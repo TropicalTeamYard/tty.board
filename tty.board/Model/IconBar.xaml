@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:tty.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="48" d:DesignWidth="200" MouseEnter="IconBar_MouseEnter"  MouseLeave="IconBar_MouseLeave" MouseUp="IconBar_MouseUp" MouseDown="IconBar_MouseDown">
-    <Grid>
+             d:DesignHeight="48" 
+             d:DesignWidth="200" 
+             MouseEnter="IconBar_MouseEnter"  
+             MouseLeave="IconBar_MouseLeave" 
+             MouseUp="IconBar_MouseUp" 
+             MouseDown="IconBar_MouseDown"
+             IsEnabledChanged="IconBar_IsEnabledChanged">
+    <Grid x:Name="gridMain" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding Height,ElementName=IconBarthis}"/>
             <ColumnDefinition />

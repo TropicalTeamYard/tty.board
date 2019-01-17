@@ -232,7 +232,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Assets\fontawesome-webfont.ttf" />
-    <Resource Include="Assets\ic_huaji.png" />
     <Resource Include="Assets\segmdl2.ttf" />
     <Resource Include="Assets\VIcon.ttf" />
     <Resource Include="Assets\icomoon.ttf" />
@@ -252,6 +251,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\sampleicon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ic_huaji.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

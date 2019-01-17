@@ -85,6 +85,18 @@ namespace tty.Model
                 GridBackground.Background = new SolidColorBrush(color);
             }
         }
+        private void IconBar_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsEnabled)
+            {
+                gridMain.Background = Brushes.Transparent;
+            }
+            else
+            {
+                gridMain.Background = Brushes.DarkGray;
+            }
+        }
+
         protected override void OnChecked()
         {
             if (IsChecked)

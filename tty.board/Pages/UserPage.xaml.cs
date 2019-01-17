@@ -35,9 +35,9 @@ namespace tty.Pages
 
             App.Core.Com.LoginCompleted += Com_LoginCompleted;
             App.Core.Com.ChangeNickNameCompleted += Com_ChangeNickNameCompleted;
+            App.Core.Com.ChangePwCompleted += Com_ChangePwCompleted;
             Console.WriteLine("---Window ---UserPage ---SetBinding");
         }
-
         private void OnUserStateChanged()
         {
             if (UserState == UserState.PasswordError)
@@ -47,15 +47,14 @@ namespace tty.Pages
                 tbkRepair.Text = "需要修复账户";
                 gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
                 //禁用其他操作
-                ibarChangeInfo.IsEnabled = false;
-                ibarChangeInfo.Background = Brushes.DarkGray;
+                ibarChangeInfoOpen.IsEnabled = false;
+                ibarChangePwOpen.IsEnabled = false;
             }
             else
             {
                 gridRepair.Visibility = Visibility.Collapsed;
-
-                ibarChangeInfo.IsEnabled = true;
-                ibarChangeInfo.Background = UserBrushes.BlueGreen;
+                ibarChangeInfoOpen.IsEnabled = true;
+                ibarChangePwOpen.IsEnabled = true;
             }
         }
         public UserState UserState
@@ -89,7 +88,6 @@ namespace tty.Pages
         {
             gridRepairFlyout.Visibility = Visibility.Collapsed;
         }
-
         private void Pwb1_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (pwb1.Password == "")
@@ -125,43 +123,43 @@ namespace tty.Pages
             gridChangeInfoFlyout.Visibility = Visibility.Visible;
             tbxNickName.Text = tbkNickName.Text;
             tbxEmail.Text = tbkEmail.Text;
-            btnChangeInfo.IsEnabled = false;
+            ibarChangeInfo.IsEnabled = false;
         }
         private void Com_ChangeNickNameCompleted(object sender, MessageEventArgs e)
         {
             App.Core.Window.SendMessage(e.Msg);
         }
-        private void CheckChangeInfoInput()
+        private void CheckInputChangeInfo()
         {
             bool isInputValid = true;
 
             if (tbxNickName.Text == "")
             {
-                tbxNickName.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                tbxNickName.Background = UserBrushes.MediumWhite;
                 isInputValid = false;
             }
             else if (CheckUtil.Nickname(tbkNickName.Text))
             {
-                tbxNickName.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                tbxNickName.Background = UserBrushes.MediumWhite;
             }
             else
             {
                 isInputValid = false;
-                tbxNickName.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
+                tbxNickName.Background = UserBrushes.Warning;
             }
 
             if (isInputValid)
             {
-                btnChangeInfo.IsEnabled = true;
+                ibarChangeInfo.IsEnabled = true;
             }
             else
             {
-                btnChangeInfo.IsEnabled = false;
+                ibarChangeInfo.IsEnabled = false;
             }
         }
         private void tbxNickName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CheckChangeInfoInput();
+            CheckInputChangeInfo();
         }
         private void BtnChangeInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -182,6 +180,98 @@ namespace tty.Pages
         {
             App.Core.Com.ExitLogin();
             App.Core.Window.NavigateTo(typeof(StartPage));
+        }
+        #endregion
+        #region 修改密码
+        private void Com_ChangePwCompleted(object sender, MessageEventArgs e)
+        {
+            if (e.Status == true)
+            {
+                App.Core.Window.NavigateTo(typeof(StartPage));
+            }
+            else
+            {
+                ibarChangePw.Text = "修改密码";
+                pwb_1.Background = UserBrushes.Warning;
+            }
+
+            App.Core.Window.SendMessage(e.Msg);
+        }
+        private void CheckInputChangePw()
+        {
+            bool flag = true;
+
+            if (pwb_1.Password == "")
+            {
+                flag = false;
+                pwb_1.Background = UserBrushes.MereWhite;
+            }
+            else if (CheckUtil.Password(pwb_1.Password))
+            {
+                pwb_1.Background = UserBrushes.MereWhite;
+            }
+            else
+            {
+                flag = false;
+                pwb_1.Background = UserBrushes.Warning;
+            }
+
+            if (pwb_2.Password == "")
+            {
+                flag = false;
+                pwb_2.Background = UserBrushes.MereWhite;
+            }
+            else if (CheckUtil.Password(pwb_2.Password))
+            {
+                pwb_2.Background = UserBrushes.MereWhite;
+            }
+            else
+            {
+                flag = false;
+                pwb_2.Background = UserBrushes.Warning;
+            }
+
+            if (pwb_3.Password == "")
+            {
+                flag = false;
+                pwb_3.Background = UserBrushes.MereWhite;
+            }
+            else if (CheckUtil.Password(pwb_3.Password) && pwb_2.Password == pwb_3.Password)
+            {
+                pwb_3.Background = UserBrushes.MereWhite;
+            }
+            else
+            {
+                flag = false;
+                pwb_3.Background = UserBrushes.Warning;
+            }
+
+            if (flag)
+            {
+                ibarChangePw.IsEnabled = true;
+            }
+            else
+            {
+                ibarChangePw.IsEnabled = false;
+            }
+        }
+        private void IconBarChangePwOpen_Click(object sender, RoutedEventArgs e)
+        {
+            gridChangePwFlyout.Visibility = Visibility.Visible;
+        }
+        private void IconButtonChangePwBack_Click(object sender, RoutedEventArgs e)
+        {
+            gridChangePwFlyout.Visibility = Visibility.Collapsed;
+        }
+        private void pwbChangPw_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            CheckInputChangePw();
+        }
+        private void IbarChangePw_Click(object sender, RoutedEventArgs e)
+        {
+            ibarChangePw.IsEnabled = false;
+            ibarChangePw.Text = "正在修改";
+            App.Core.Com.ChangePwAsync(pwb_1.Password, pwb_2.Password);
         }
         #endregion
     }

@@ -20,6 +20,7 @@ namespace tty.Model
         /// 20%alpha白色(255,255,255)
         /// </summary>
         public static Brush MereWhite => new SolidColorBrush(Color.FromArgb(51, 255, 255, 255));
+        public static Brush Warning => new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
         /// <summary>
         /// 30%alpha黑色(0,0,0)
         /// </summary>

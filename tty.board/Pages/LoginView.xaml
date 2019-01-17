@@ -16,10 +16,13 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid>
-                <Grid Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Ellipse Fill="#4488AA"/>
-                    <model:IconButtonRound Text="&#xe72b;" FontSize="16" FontFamily="Segoe MDL2 Assets" Click="IconButtonRound_Click"/>
-                </Grid>
+                <model:IconButtonRound 
+                    Width="40" 
+                    Height="40" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" 
+                    Text="&#xe72b;" 
+                    Click="IconButtonRound_Click"/>
                 <Grid Height="120" VerticalAlignment="Bottom" Margin="0,0,0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"/>
@@ -29,21 +32,47 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="10">
-                        <Ellipse Fill="#44FFFFFF"/>
-                        <model:ImageTriggerButtonRound FontSize="16" FontFamily="Segoe MDL2 Assets" CanAutoCheck="False"/>
-                    </Grid>
-                    <model:IconTextBox x:Name="tbxUser" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请输入账号" TextChanged="TbxUser_TextChanged"/>
-                    <Grid Grid.Row="1"  Margin="10">
-                        <Ellipse Fill="#44FFFFFF"/>
-                        <model:IconButtonRound  FontSize="16" Text="&#xe8d7;" FontFamily="Segoe MDL2 Assets"/>
-                    </Grid>
-                    <model:IconPasswordBox x:Name="pwb1" Grid.Row="1" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请输入密码" PasswordChanged="Pwb1_PasswordChanged"/>
+                    <model:ImageTriggerButtonRound 
+                        Margin="10" 
+                        FontSize="16" 
+                        FontFamily="Segoe MDL2 Assets" 
+                        CanAutoCheck="False"/>
+                    <model:IconTextBox 
+                        x:Name="tbxUser" 
+                        Grid.Column="1" 
+                        Margin="20,10" 
+                        Height="40"
+                        Background="#22FFFFFF"  
+                        FontSize="14" 
+                        Hint="请输入账号" 
+                        TextChanged="TbxUser_TextChanged"/>
+                    <model:IconButtonRound 
+                        Style="{StaticResource IIconButtonRound}"
+                        Grid.Row="1" 
+                        Margin="10" 
+                        Text="&#xe8d7;"/>
+                    <model:IconPasswordBox 
+                        Style="{StaticResource IIconPasswordBox}"
+                        x:Name="pwb1" 
+                        Grid.Row="1" 
+                        Grid.Column="1" 
+                        Margin="20,10"
+                        Height="40" 
+                        PasswordChanged="Pwb1_PasswordChanged"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="gridLogin" Grid.Row="1" Width="160"  Background="#AAAAAA">
-                <model:UButton x:Name="btnLogin" IsEnabled="False" Click="BtnLogin_Click">
-                    <TextBlock  Grid.Column="1" Style="{StaticResource DisplayText}" Text="登录"/>
+            <Grid x:Name="gridLogin" 
+                  Grid.Row="1" 
+                  Width="160"  
+                  Background="#AAAAAA">
+                <model:UButton 
+                    x:Name="btnLogin" 
+                    IsEnabled="False" 
+                    Click="BtnLogin_Click">
+                    <TextBlock  
+                        Grid.Column="1" 
+                        Style="{StaticResource DisplayText}" 
+                        Text="登录"/>
                 </model:UButton>
             </Grid>
             <Grid Grid.Row="3" Width="160" Background="#55777777">
@@ -52,14 +81,28 @@
                 </model:UButton>
             </Grid>
         </Grid>
-        <Grid x:Name="gridWait" Visibility="Collapsed">
-            <Grid x:Name="gridRing" Grid.Row="1" VerticalAlignment="Bottom" Margin="0,0,0,40" Visibility="Visible" Width="160" Height="40">
+        <Grid x:Name="gridWait" 
+              Visibility="Collapsed">
+            <Grid x:Name="gridRing" 
+                  Grid.Row="1" 
+                  VerticalAlignment="Bottom" 
+                  Margin="0,0,0,40" 
+                  Width="160" 
+                  Height="40"
+                  Visibility="Visible" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <model:ProgressRing Height="30" Width="30" IsActive="True"/>
-                <TextBlock Grid.Column="1" Style="{StaticResource  DisplayText}" FontSize="14" Text="正在登录"/>
+                <model:ProgressRing 
+                    Height="30" 
+                    Width="30" 
+                    IsActive="True"/>
+                <TextBlock 
+                    Grid.Column="1" 
+                    Style="{StaticResource  DisplayText}" 
+                    FontSize="14" 
+                    Text="正在登录"/>
             </Grid>
         </Grid>
     </Grid>

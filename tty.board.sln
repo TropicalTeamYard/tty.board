@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.board", "tty.board\tty.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.com", "tty.com\tty.com.csproj", "{CF17BD99-9115-4DCB-A6A1-2D34108706FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.demo", "tty.demo\tty.demo.csproj", "{26870894-7B70-451F-82FA-DD1DA23170BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CF17BD99-9115-4DCB-A6A1-2D34108706FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF17BD99-9115-4DCB-A6A1-2D34108706FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF17BD99-9115-4DCB-A6A1-2D34108706FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26870894-7B70-451F-82FA-DD1DA23170BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26870894-7B70-451F-82FA-DD1DA23170BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26870894-7B70-451F-82FA-DD1DA23170BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26870894-7B70-451F-82FA-DD1DA23170BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

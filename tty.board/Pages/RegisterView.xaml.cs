@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using tty.com.Util;
 using tty.com;
+using tty.Model;
 
 namespace tty.Pages
 {
@@ -27,58 +28,56 @@ namespace tty.Pages
             InitializeComponent();
             App.Core.Com.RegisterCompleted += Com_RegisterCompleted;
         }
-        
+
         public event RoutedEventHandler GoToLogin;
         public event RoutedEventHandler ToStart;
 
         #region 输入检查
-        private bool isInputValid = false;
         private void CheckInput()
         {
             var flag = true;
             if (tbxUser.Text == "")
             {
                 flag = false;
-                tbxUser.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                tbxUser.Background = UserBrushes.MereWhite;
             }
             else if (CheckUtil.Nickname(tbxUser.Text))
             {
-                tbxUser.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                tbxUser.Background = UserBrushes.MereWhite;
             }
             else
             {
                 flag = false;
-                tbxUser.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x33));
+                tbxUser.Background = UserBrushes.Warning;
             }
 
             if (pwb1.Password == "")
             {
                 flag = false;
-                pwb1.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                pwb1.Background = UserBrushes.MereWhite;
             }
             else if (CheckUtil.Password(pwb1.Password))
             {
-                pwb1.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                pwb1.Background = UserBrushes.MereWhite;
             }
             else
             {
                 flag = false;
-                pwb1.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
+                pwb1.Background = UserBrushes.Warning;
             }
-
             if (pwb2.Password == "")
             {
                 flag = false;
-                pwb2.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                pwb2.Background = UserBrushes.MereWhite;
             }
             else if (CheckUtil.Password(pwb2.Password) && pwb1.Password == pwb2.Password)
             {
-                pwb2.Background = new SolidColorBrush(Color.FromArgb(0x22, 0xff, 0xff, 0xff));
+                pwb2.Background = UserBrushes.MereWhite;
             }
             else
             {
                 flag = false;
-                pwb2.Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
+                pwb2.Background = UserBrushes.Warning;
             }
 
             if (flag)
@@ -92,7 +91,6 @@ namespace tty.Pages
                 btnLogin.IsEnabled = false;
             }
 
-            isInputValid = flag;
         }
         private void TbxUser_TextChanged(object sender, TextChangedEventArgs e)
         {

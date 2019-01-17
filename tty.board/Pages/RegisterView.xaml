@@ -26,26 +26,59 @@
                         <RowDefinition Height="60"/>
                         <RowDefinition  Height="60"/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="10">
-                        <Ellipse Fill="#44FFFFFF"/>
-                        <model:IconButtonRound  FontSize="16" Text="&#xe779;" FontFamily="Segoe MDL2 Assets"/>
-                    </Grid>
-                    <model:IconTextBox x:Name="tbxUser" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请输入昵称" TextChanged="TbxUser_TextChanged" />
-                    <Grid Grid.Row="1"  Margin="10">
-                        <Ellipse Fill="#44FFFFFF"/>
-                        <model:IconButtonRound  FontSize="16" Text="&#xe8d7;" FontFamily="Segoe MDL2 Assets"/>
-                    </Grid>
-                    <model:IconPasswordBox x:Name="pwb1" Grid.Row="1" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请输入密码" PasswordChanged="Pwb1_PasswordChanged" />
-                    <Grid Grid.Row="2"  Margin="10">
-                        <Ellipse Fill="#44FFFFFF"/>
-                        <model:IconButtonRound  FontSize="16" Text="&#xe8d7;" FontFamily="Segoe MDL2 Assets"/>
-                    </Grid>
-                    <model:IconPasswordBox x:Name="pwb2" Grid.Row="2" Grid.Column="1" Background="#22FFFFFF" Margin="20,10" Height="40" FontSize="14" Hint="请再次输入密码"  PasswordChanged="Pwb2_PasswordChanged"/>
+                    <model:IconButtonRound 
+                        Style="{StaticResource IIconButtonRound}" 
+                        Margin="10"  
+                        Text="&#xe779;"/>
+                    <model:IconTextBox 
+                        x:Name="tbxUser"
+                        Background="#22FFFFFF" 
+                        Grid.Column="1" 
+                        Margin="20,10" 
+                        Height="36" 
+                        FontSize="14"
+                        Hint="请输入昵称" 
+                        TextChanged="TbxUser_TextChanged" />
+                    <model:IconButtonRound 
+                        Grid.Row="1"  
+                        Style="{StaticResource IIconButtonRound}" 
+                        Margin="10" 
+                        Text="&#xe8d7;"/>
+                    <model:IconPasswordBox 
+                        x:Name="pwb1"
+                        Style="{StaticResource IIconPasswordBox}"
+                        Grid.Row="1" 
+                        Grid.Column="1"
+                        Margin="20,10" 
+                        PasswordChanged="Pwb1_PasswordChanged" />
+                    <model:IconButtonRound 
+                        Grid.Row="2" 
+                        Style="{StaticResource IIconButtonRound}"
+                        Margin="10"  
+                        Text="&#xe8d7;" />
+                    <model:IconPasswordBox 
+                        Style="{StaticResource IIconPasswordBox}"
+                        x:Name="pwb2" 
+                        Grid.Row="2" 
+                        Grid.Column="1" 
+                        Margin="20,10" 
+                        Hint="请再次输入密码"  
+                        PasswordChanged="Pwb2_PasswordChanged"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="gridLogin" Grid.Row="2" Width="160" Margin="0,5" Background="#AAAAAA">
-                <model:UButton x:Name="btnLogin" IsEnabled="False" Click="BtnLogin_Click">
-                    <TextBlock  Grid.Column="1" Style="{StaticResource DisplayText}" Text="注册"/>
+            <Grid x:Name="gridLogin" 
+                  Grid.Row="2" 
+                  Width="160" 
+                  Margin="0,5" 
+                  Background="#AAAAAA">
+                <model:UButton 
+                    x:Name="btnLogin" 
+                    IsEnabled="False" 
+                    Click="BtnLogin_Click">
+                    <TextBlock  
+                        Grid.Column="1" 
+                        Style="{StaticResource DisplayText}" 
+                        Text="注册"/>
                 </model:UButton>
             </Grid>
             <Grid Grid.Row="3" Width="160" Margin="0,5" Background="#55777777">
@@ -54,17 +87,32 @@
                 </model:UButton>
             </Grid>
         </Grid>
-        <Grid x:Name="gridWait" Visibility="Collapsed">
-            <Grid x:Name="gridRing" Grid.Row="1" VerticalAlignment="Bottom" Margin="0,0,0,40" Visibility="Visible" Width="160" Height="40">
+        <Grid x:Name="gridWait" 
+              Visibility="Collapsed">
+            <Grid x:Name="gridRing" 
+                  Grid.Row="1" 
+                  VerticalAlignment="Bottom" 
+                  Margin="0,0,0,40" 
+                  Width="160" 
+                  Height="40"                  
+                  Visibility="Visible" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <model:ProgressRing Height="30" Width="30" IsActive="True"/>
-                <TextBlock Grid.Column="1" Style="{StaticResource  DisplayText}" FontSize="14" Text="正在注册"/>
+                <model:ProgressRing 
+                    Height="30" 
+                    Width="30" 
+                    IsActive="True"/>
+                <TextBlock 
+                    Grid.Column="1" 
+                    Style="{StaticResource  DisplayText}" 
+                    FontSize="14" 
+                    Text="正在注册"/>
             </Grid>
         </Grid>
-        <Grid x:Name="gridCompleted" Visibility="Collapsed">
+        <Grid x:Name="gridCompleted" 
+              Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
                 <RowDefinition Height="40"/>
@@ -74,26 +122,56 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="1" Width="Auto" HorizontalAlignment="Center" >
+            <Grid Grid.Row="1" Width="Auto" 
+                  HorizontalAlignment="Center" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="Hi,"/>
-                <TextBlock x:Name="tbkNickName" Grid.Column="1" Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="StringBuilder"/>
+                <TextBlock 
+                    Style="{StaticResource DisplayText}" 
+                    FontWeight="Bold"  
+                    Text="Hi,"/>
+                <TextBlock 
+                    x:Name="tbkNickName" 
+                    Grid.Column="1" 
+                    Style="{StaticResource DisplayText}" 
+                    FontWeight="Bold"  
+                    Text="StringBuilder"/>
             </Grid>
             <Grid Grid.Row="2" Width="Auto" HorizontalAlignment="Center" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource DisplayText}" FontWeight="Bold"  Text="你注册的用户名为: "/>
-                <TextBlock x:Name="tbkUserName" Grid.Column="1" Style="{StaticResource DisplayText}" Foreground="YellowGreen" FontWeight="Bold"  Text="10088"/>
+                <TextBlock 
+                    Style="{StaticResource DisplayText}" 
+                    FontWeight="Bold"  
+                    Text="你注册的用户名为: "/>
+                <TextBlock 
+                    x:Name="tbkUserName" 
+                    Grid.Column="1" 
+                    Style="{StaticResource DisplayText}" 
+                    Foreground="YellowGreen" 
+                    FontWeight="Bold"  
+                    Text="10088"/>
             </Grid>
-            <TextBlock Grid.Row="3" Style="{StaticResource DisplayText}" Text="请牢记你的用户名，敬请开始吧。" FontSize="12" Foreground="DarkGray"/>
-            <Grid Grid.Row="5" Width="160" Margin="5" Background="#22AA88">
-                <model:UButton Click="ButtonStart_Click">
-                    <TextBlock  Grid.Column="1" Style="{StaticResource DisplayText}" Text="开启旅程"/>
+            <TextBlock
+                Grid.Row="3" 
+                Style="{StaticResource DisplayText}" 
+                Text="请牢记你的用户名，敬请开始吧。" 
+                FontSize="12" 
+                Foreground="DarkGray"/>
+            <Grid Grid.Row="5" 
+                  Width="160" 
+                  Margin="5" 
+                  Background="#22AA88">
+                <model:UButton 
+                    Click="ButtonStart_Click">
+                    <TextBlock  
+                        Grid.Column="1" 
+                        Style="{StaticResource DisplayText}" 
+                        Text="开启旅程"/>
                 </model:UButton>
             </Grid>
         </Grid>

@@ -31,6 +31,8 @@ namespace tty.com
             Interval = TimeSpan.FromSeconds(10),
             IsEnabled = false
         };
+        private object locker1 = new object();
+        private object locker2 = new object();
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -38,8 +40,8 @@ namespace tty.com
             {
                 UpdateUserInfoAsync();
                 UpdateMsgAsync();
+                UpdateSharedInfoAsync();
             }
-            UpdateSharedInfoAsync();
             Console.WriteLine("---Com ---Timer ---Raised");
         }
         private void Restart()
@@ -162,7 +164,33 @@ namespace tty.com
         public event EventHandler<MessageEventArgs> RegisterCompleted;
         public event EventHandler<MessageEventArgs> ChangeNickNameCompleted;
         public event EventHandler<MessageEventArgs> AddMsgCompleted;
+        public event EventHandler<MessageEventArgs> ChangePwCompleted;
 
+        public UserInfo GetUserInfo(string username)
+        {
+            if (User.Users != null)
+            {
+                var selected = from item in User.Users where item.username == username select item;
+                if (selected.Count() > 0)
+                {
+                    return selected.First();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public void ExitLogin()
+        {
+            User.Current.credit = null;
+            User.Current.portrait = "";
+            User.Current.nickname = "";
+        }
         /// <summary>
         /// 初始化
         /// </summary>
@@ -414,7 +442,7 @@ namespace tty.com
             {
                 try
                 {
-                    if (User.Current!= null && User.Current.credit != null)
+                    if (User.Current != null && User.Current.credit != null)
                     {
                         var postdata = $"type=base&credit={User.Current.credit}";
                         result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(HttpUtil.post(API[APIKey.GetInfo], postdata));
@@ -546,24 +574,27 @@ namespace tty.com
                 ResponceModel<User_MD5[]> result = null;
                 await Task.Run(() =>
                 {
-                    try
+                    lock (locker2)
                     {
-                        var nk = from item in User.Users where item.IsLoaded == true select item;
-                        var postdata = $"type=usermd5&query={JsonConvert.SerializeObject(nk.ToArray().Select((m) => m.username))}";
-                        result = JsonConvert.DeserializeObject<ResponceModel<User_MD5[]>>(
-                                HttpUtil.post(API[APIKey.Shared], postdata)
-                            );
-
-                        if (result.code == 200)
+                        try
                         {
-                            added = from item in nk where (item.md5 != result.data.TakeWhile((m) => m.username == item.username).First().username) select item.username;
+                            var nk = from item in User.Users where item.IsLoaded == true select item;
+                            var postdata = $"type=usermd5&query={JsonConvert.SerializeObject(nk.ToArray().Select((m) => m.username))}";
+                            result = JsonConvert.DeserializeObject<ResponceModel<User_MD5[]>>(
+                                    HttpUtil.post(API[APIKey.Shared], postdata)
+                                );
+
+                            if (result.code == 200)
+                            {
+                                added = from item in nk where (item.md5 != result.data.TakeWhile((m) => m.username == item.username).First().username) select item.username;
+                            }
+
+                            Console.WriteLine($"---Com ---UpdateShareInfo ---{result.msg}");
                         }
+                        catch (Exception)
+                        {
 
-                        Console.WriteLine($"---Com ---UpdateShareInfo ---{result.msg}");
-                    }
-                    catch (Exception)
-                    {
-
+                        }
                     }
                 });
 
@@ -635,16 +666,19 @@ namespace tty.com
 
             await Task.Run(() =>
             {
-                try
+                lock (locker1)
                 {
-                    var postdata = $"method=update&credit={User.Current.credit}&time={Msg.UpdateTime.ToString()}";
-                    result = JsonConvert.DeserializeObject<ResponceModel<Time_Msg>>(
-                        HttpUtil.post(API[APIKey.MsgBoard], postdata)
-                        );
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"---Com ---UpdateMsg ---{ex.Message}");
+                    try
+                    {
+                        var postdata = $"method=update&credit={User.Current.credit}&time={Msg.UpdateTime.ToString()}";
+                        result = JsonConvert.DeserializeObject<ResponceModel<Time_Msg>>(
+                            HttpUtil.post(API[APIKey.MsgBoard], postdata)
+                            );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"---Com ---UpdateMsg ---{ex.Message}");
+                    }
                 }
             });
 
@@ -689,31 +723,46 @@ namespace tty.com
 
                 Console.WriteLine($"---Com ---UpdateMsg ---{result.msg}");
             }
+
+
         }
-        public UserInfo GetUserInfo(string username)
+        public async void ChangePwAsync(string password, string newpassword)
         {
-            if (User.Users != null)
+            ResponceModel result = null;
+
+            await Task.Run(() =>
             {
-                var selected = from item in User.Users where item.username == username select item;
-                if (selected.Count() > 0)
+                try
                 {
-                    return selected.First();
+                    var postdata = $"method=changepw&username={User.Current.username}&password={ToolUtil.MD5Encrypt32(password)}&newpassword={ToolUtil.MD5Encrypt32(newpassword)}";
+                    result = JsonConvert.DeserializeObject<ResponceModel>(
+                        HttpUtil.post(API[APIKey.User], postdata)
+                        );
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        ChangePwCompleted?.Invoke(this, new MessageEventArgs(false, ex.Message));
+                        Console.WriteLine($"---Com ---ChangePw ---{ex.Message}");
+                    });
+                }
+            });
+
+            Dispatcher.Invoke(() =>
+            {
+                if (result.code == 200)
+                {
+                    User.Current.credit = null;
+                    ChangePwCompleted?.Invoke(this, new MessageEventArgs(true, result.msg));
                 }
                 else
                 {
-                    return null;
+                    ChangePwCompleted?.Invoke(this, new MessageEventArgs(false, result.msg));
                 }
-            }
-            else
-            {
-                return null;
-            }
-        }
-        public void ExitLogin()
-        {
-            User.Current.credit = null;
-            User.Current.portrait = "";
-            User.Current.nickname = "";
+            });
+
+            Console.WriteLine($"---Com ---ChangePw ---{result.msg}");
         }
     }
 }
