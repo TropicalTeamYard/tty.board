@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tty.demo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="800">
     <Grid>
-        <local:ImageDealerUnsafe BitSource="/1.jpg">
-            
-        </local:ImageDealerUnsafe>
+        <Grid Width="640" Height="640">
+            <local:ImageDealer Source="/1.jpg" />
+        </Grid>
     </Grid>
 </Window>

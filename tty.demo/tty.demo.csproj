@@ -60,10 +60,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageDealUnSafe.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,9 +71,6 @@
     <Compile Include="Helper.cs" />
     <Compile Include="ImageDealer.xaml.cs">
       <DependentUpon>ImageDealer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageDealUnSafe.xaml.cs">
-      <DependentUpon>ImageDealUnSafe.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

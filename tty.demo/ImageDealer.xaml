@@ -1,12 +1,67 @@
-﻿<UserControl x:Class="tty.demo.ImageDealer"
+﻿<UserControl x:Name="ImageDealerthis" x:Class="tty.demo.ImageDealer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:tty.demo"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Background="Transparent"
-             SnapsToDevicePixels="True" 
-             Loaded="UserControl_Loaded">
-    <Grid Name="MainGrid" MinHeight="200" MinWidth="200" >
+             Height="640" Width="640" Loaded="ImageDealer_Loaded">
+    <Grid>
+        <Grid Margin="20">
+            <Image x:Name="img" Source="{Binding Source,ElementName=ImageDealerthis}" />
+            <Canvas x:Name="cv1">
+                <Rectangle x:Name="rtLeft" Fill="#88000000" Width="150" Height="600"/>
+                <Rectangle x:Name="rtRight" Fill="#88000000" Width="100" Height="600" Margin="500,0,0,0"/>
+                <Rectangle x:Name="rtTop" Fill="#88000000" Width="350" Height="120" Margin="150,0,0,0"/>
+                <Rectangle x:Name="rtBottom" Fill="#88000000" Width="350" Height="200" Margin="150,400,0,0"/>
+                <Border x:Name="bdCenter" Width="350" Height="280" Margin="150,120,0,0" BorderThickness="2" BorderBrush="White"/>
+                <Ellipse x:Name="elpLeftTop" Width="20" Height="20" Margin="150,120,0,0" Fill="White" StrokeThickness="2" Stroke="Black" RenderTransformOrigin="0.5,0.5"
+                         MouseDown="Elp_MouseDown">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-10" Y="-10"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse x:Name="elpRightTop" Width="20" Height="20" Margin="500,120,0,0" Fill="White" StrokeThickness="2" Stroke="Black" RenderTransformOrigin="0.5,0.5"
+                          MouseDown="Elp_MouseDown">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-10" Y="-10"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse x:Name="elpLeftBottom" Width="20" Height="20" Margin="150,400,0,0" Fill="White" StrokeThickness="2" Stroke="Black" RenderTransformOrigin="0.5,0.5"
+                          MouseDown="Elp_MouseDown">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-10" Y="-10"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse x:Name="elpRightBottom" Width="20" Height="20" Margin="500,400,0,0" Fill="White" StrokeThickness="2" Stroke="Black" RenderTransformOrigin="0.5,0.5"
+                         MouseDown="Elp_MouseDown">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-10" Y="-10"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+
+            </Canvas>
+        </Grid>
+
     </Grid>
 </UserControl>

@@ -764,5 +764,11 @@ namespace tty.com
 
             Console.WriteLine($"---Com ---ChangePw ---{result.msg}");
         }
+        public async void DeleteMsgAsync(string id)
+        {
+
+        }
+
+
     }
 }
