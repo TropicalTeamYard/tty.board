@@ -5,7 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:tty.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="450" Width="300">
+             d:DesignHeight="450" Width="300" 
+             Background="Transparent"
+             MouseEnter="MsgCard_MouseEnter"
+             MouseLeave="MsgCard_MouseLeave">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -17,6 +20,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition />
+                <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             <Grid Margin="5">
                 <local:ImageTriggerButtonRound IsEnabled="False" x:Name="itbPortrait"/>
@@ -28,10 +32,19 @@
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="tbkNickName" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White" FontSize="14" FontWeight="Bold" />
                 <StackPanel Margin="20,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal" Width="Auto">
-                    <TextBlock x:Name="tbkUserName" Foreground="Gray" Text="10088"/>
+                    <TextBlock Foreground="LightGray" Text="UserID:"/>
+                    <TextBlock x:Name="tbkUserName" Foreground="LightGray" Text="10088"/>
                 </StackPanel>
                 <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Gray" Text="{Binding Time,ElementName=MsgCardthis}"/>
             </Grid>
+            <local:IconButton 
+                x:Name="ibtnDelete" 
+                Margin="0,10" 
+                Grid.Column="2"  
+                FontFamily="Segoe MDL2 Assets" 
+                Text="&#xe74d;"
+                Visibility="Collapsed"
+                Click="IbtnDelete_Click"/>
         </Grid>
         <Grid Grid.Row="1" MaxHeight="140">
             <TextBlock Margin="5" TextWrapping="Wrap" Foreground="LightBlue" FontSize="14" Text="{Binding Text,ElementName=MsgCardthis}"/>

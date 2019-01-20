@@ -514,7 +514,96 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!--右键菜单样式-->
+        <Style TargetType="{x:Type ContextMenu}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border x:Name="Border" Background="#2B2B2B"  BorderThickness="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="#777777" />
+                            </Border.BorderBrush>
+                            <ItemsPresenter Margin="0,5" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"  Storyboard.TargetProperty="(FrameworkElement.Height)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0" Value="0"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2" Value="72"/>
+                                            </DoubleAnimationUsingKeyFrames>-->
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(FrameworkElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0" Value="0"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="auto"/>
+        </Style>
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border  MinWidth="120" MinHeight="32" >
+                            <Border.Background>
+                                <SolidColorBrush x:Name="MyAnimatedBrushBackground" Color="Transparent" />
+                            </Border.Background>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter ContentSource="Icon" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MyAnimatedBrushBackground" Storyboard.TargetProperty="Color">
+                                                <LinearColorKeyFrame Value="Transparent" KeyTime="00:00:00.0020000" />
+                                                <LinearColorKeyFrame Value="#33FFFFFF" KeyTime="00:00:00.0320000" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MyAnimatedBrushBackground" Storyboard.TargetProperty="Color">
+                                                <LinearColorKeyFrame Value="#33FFFFFF" KeyTime="00:00:00.0020000" />
+                                                <LinearColorKeyFrame Value="Transparent" KeyTime="00:00:00.0320000" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
 
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
         <!--高重用样式-->
         <Style x:Key="DisplayText" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>

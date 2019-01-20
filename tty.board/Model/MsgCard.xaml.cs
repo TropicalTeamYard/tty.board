@@ -24,6 +24,14 @@ namespace tty.Model
         public MsgCard()
         {
             InitializeComponent();
+
+            try
+            {
+                ibtnDelete.SetBinding(IsEnabledProperty, new Binding() { Source = App.Core.Com, Path = new PropertyPath("IsMsgDeleteEnabled") });
+            }
+            catch (Exception)
+            {
+            }
         }
         public string Time
         {
@@ -39,6 +47,11 @@ namespace tty.Model
         {
             get { return (object)GetValue(CommentsProperty); }
             set { SetValue(CommentsProperty, value); }
+        }
+        public int ID
+        {
+            get { return (int)GetValue(IDProperty); }
+            set { SetValue(IDProperty, value); }
         }
 
         private void OnUserInfoChanged()
@@ -81,6 +94,22 @@ namespace tty.Model
             }
         }
 
+        private void MsgCard_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ibtnDelete.Visibility = Visibility.Visible;
+        }
+        private void MsgCard_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ibtnDelete.Visibility = Visibility.Collapsed;
+        }
+        private void IbtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (ID != -1)
+            {
+                App.Core.Com.RemoveMsgAsync(ID);
+            }
+        }
+
         public string UserName  
         {
             get { return (string)GetValue(UserNameProperty); }
@@ -100,5 +129,7 @@ namespace tty.Model
             {
                 ((MsgCard)d).OnCommentsChanged();
             }));
+        public static readonly DependencyProperty IDProperty =
+            DependencyProperty.Register("ID", typeof(int), typeof(MsgCard), new PropertyMetadata(-1));
     }
 }

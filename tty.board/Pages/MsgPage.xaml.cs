@@ -26,7 +26,10 @@ namespace tty.Pages
 
             listMsg.ItemsSource = App.Core.Com.Msg.Msgs;
             App.Core.Com.AddMsgCompleted += Com_AddMsgCompleted;
+            App.Core.Com.RemoveMsgCompleted += Com_RemoveMsgCompleted;
         }
+
+
 
         #region 发送留言
         private void Com_AddMsgCompleted(object sender, com.MessageEventArgs e)
@@ -63,6 +66,9 @@ namespace tty.Pages
             }
         }
         #endregion
-
+        private void Com_RemoveMsgCompleted(object sender, com.MessageEventArgs e)
+        {
+            App.Core.Window.SendMessage(e.Msg);
+        }
     }
 }

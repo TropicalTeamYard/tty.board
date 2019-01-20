@@ -131,7 +131,7 @@ namespace tty.com.Util
             return bImg;
         }
 
-        public static BitmapImage BitmapToBitmapImage(System.Drawing. Bitmap bitmap)
+        public static BitmapImage BitmapToBitmapImage(System.Drawing.Bitmap bitmap)
         {
             using (MemoryStream stream = new MemoryStream())
             {

@@ -52,8 +52,6 @@ namespace tty.com.Util
 
             return Unicode2String(responseString);
         }
-
-
         public static string post(string url, string postdata, string token = "")
         {
             var request = (HttpWebRequest)WebRequest.Create(url);

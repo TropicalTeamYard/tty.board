@@ -15,11 +15,11 @@ namespace tty.Model
         /// <summary>
         /// 20%alpha黑色(0,0,0)
         /// </summary>
-        public static Brush MereBlack => new SolidColorBrush(Color.FromArgb(51,0,0,0));
+        public static Brush MereBlack => new SolidColorBrush(Color.FromArgb(33,0,0,0));
         /// <summary>
         /// 20%alpha白色(255,255,255)
         /// </summary>
-        public static Brush MereWhite => new SolidColorBrush(Color.FromArgb(51, 255, 255, 255));
+        public static Brush MereWhite => new SolidColorBrush(Color.FromArgb(33, 255, 255, 255));
         public static Brush Warning => new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x00));
         /// <summary>
         /// 30%alpha黑色(0,0,0)

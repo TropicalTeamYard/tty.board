@@ -232,7 +232,7 @@
                             IsIconShow="False" 
                             Background="#22FFFFFF" 
                             Margin="10" 
-                            Height="40" 
+                            Height="32"
                             FontSize="14" 
                             Hint="请输入邮箱" />
                     </Grid>
@@ -360,13 +360,19 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <model:IconButtonRound 
-                    Width="40" 
-                    Height="40" 
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="10,10,0,0"
-                    Text="&#xe72b;" 
-                    Click="IconButtonChangePortraitBack_Click"/>
+                Width="40" 
+                Height="40" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="10,10,0,0"
+                Text="&#xe72b;" 
+                Click="IconButtonChangePortraitBack_Click"/>
+            <TextBlock 
+                Grid.Row="1"
+                Style="{StaticResource DisplayText}"
+                FontSize="12"
+                Foreground="LightGray"
+                Text="若要修改头像，请点击[选择图片]"/>
             <model:ImageDealer 
                 x:Name="imgd" 
                 Grid.Row="1" 

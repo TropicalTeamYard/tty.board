@@ -139,12 +139,12 @@ namespace tty.Pages
 
             if (tbxNickName.Text == "")
             {
-                tbxNickName.Background = UserBrushes.MediumWhite;
+                tbxNickName.Background = UserBrushes.MereWhite;
                 isInputValid = false;
             }
             else if (CheckUtil.Nickname(tbkNickName.Text))
             {
-                tbxNickName.Background = UserBrushes.MediumWhite;
+                tbxNickName.Background = UserBrushes.MereWhite;
             }
             else
             {
@@ -313,7 +313,7 @@ namespace tty.Pages
         }
         private void IconBarPortraitSubmit_Click(object sender, RoutedEventArgs e)
         {
-            BitmapImage bitmapImage = ToolUtil.ReSizeImage(imgd.ClipSource, new Size(218, 218));
+            BitmapImage bitmapImage = ToolUtil.ReSizeImage(imgd.ClipSource, new Size(256, 256));
             Console.WriteLine($"---Window ---UserPage ---CutPic:width={bitmapImage.PixelWidth};height={bitmapImage.PixelHeight}");
             App.Core.Com.ChangePortraitAsync(bitmapImage);
             gridChangePortraitFlyout.Visibility = Visibility.Collapsed;

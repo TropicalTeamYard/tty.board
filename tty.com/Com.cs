@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace tty.com
     /// <summary>
     /// 交互集.
     /// </summary>
-    public class Com
+    public class Com:INotifyPropertyChanged
     {
         public Com(Dispatcher dispatcher)
         {
@@ -33,6 +34,7 @@ namespace tty.com
         };
         private object locker1 = new object();
         private object locker2 = new object();
+        private bool isMsgDeleteEnabled = true;
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -131,6 +133,17 @@ namespace tty.com
 
             Console.WriteLine($"---Com ---pullmsg  ---wheremsgid:{msg.id}");
         }
+        private void removemsg(int id)
+        {
+            for (int i = 0; i < Msg.Msgs.Count; i++)
+            {
+                if (Msg.Msgs[i].id == id)
+                {
+                    Msg.Msgs.RemoveAt(i);
+                    break;
+                }
+            }
+        }
         //private void pulluserInfo(UserInfo user)
         //{
         //    Dispatcher.Invoke(() => {
@@ -158,6 +171,14 @@ namespace tty.com
         public bool IsLoaded { get; private set; }
         public User User { get; private set; } = new User();
         public Msg Msg { get; private set; } = new Msg();
+        public bool IsMsgDeleteEnabled
+        {
+            get => isMsgDeleteEnabled;
+            set {
+                isMsgDeleteEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMsgDeleteEnabled)));
+            }
+        }
 
         public event EventHandler<MessageEventArgs> InitializeCompleted;
         public event EventHandler<MessageEventArgs> LoginCompleted;
@@ -166,6 +187,8 @@ namespace tty.com
         public event EventHandler<MessageEventArgs> AddMsgCompleted;
         public event EventHandler<MessageEventArgs> ChangePwCompleted;
         public event EventHandler<MessageEventArgs> ChangePortraitCompleted;
+        public event EventHandler<MessageEventArgs> RemoveMsgCompleted;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public UserInfo GetUserInfo(string username)
         {
@@ -349,7 +372,8 @@ namespace tty.com
             {
                 try
                 {
-                    var postdata = $"method=register2&nickname={nickname}&password={ToolUtil.MD5Encrypt32(password)}";
+                    //SOLVEDBUG 传参时用Uri编码值。
+                    var postdata = $"method=register2&nickname={Uri.EscapeDataString(nickname)}&password={ToolUtil.MD5Encrypt32(password)}";
                     result = JsonConvert.DeserializeObject<ResponceModel<UserInfo>>(
                             HttpUtil.post(API[APIKey.User], postdata)
                                 );
@@ -489,7 +513,8 @@ namespace tty.com
             {
                 try
                 {
-                    var postdata = $"method=changenickname&credit={User.Current.credit}&nickname={nickname}";
+                    //SOLVEDBUG 传参时用Uri编码值。
+                    var postdata = $"method=changenickname&credit={User.Current.credit}&nickname={Uri.EscapeDataString(nickname)}";
                     result = JsonConvert.DeserializeObject<ResponceModel>(
                         HttpUtil.post(API[APIKey.User], postdata)
                             );
@@ -663,7 +688,7 @@ namespace tty.com
             {
                 try
                 {
-                    var postdata = $"method=add&credit={User.Current.credit}&content={content}";
+                    var postdata = $"method=add&credit={User.Current.credit}&content={Uri.EscapeDataString( content)}";
                     result = JsonConvert.DeserializeObject<ResponceModel<MsgUni>>(HttpUtil.post(API[APIKey.MsgBoard], postdata));
                 }
                 catch (Exception ex)
@@ -757,7 +782,14 @@ namespace tty.com
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                pullmsg(item);
+                                if (item.mark == 0)
+                                {
+                                    pullmsg(item);
+                                }
+                                else if(item.mark == 2)
+                                {
+                                    removemsg(item.id);
+                                }
                             });
                         }
                     }
@@ -767,6 +799,45 @@ namespace tty.com
             }
 
 
+        }
+        public async void RemoveMsgAsync(int id)
+        {
+            Dispatcher.Invoke(() => { IsMsgDeleteEnabled = false; });
+            ResponceModel result = null;
+            await Task.Run(() => {
+                try
+                {
+                    var postdata = $"method=delete&credit={User.Current.credit}&id={id}";
+                    result = JsonConvert.DeserializeObject<ResponceModel>(
+                        HttpUtil.post(API[APIKey.MsgBoard],postdata)
+                        );
+                }
+                catch (Exception ex)
+                {
+                    RemoveMsgCompleted?.Invoke(this, new MessageEventArgs(false, ex.Message));
+                }
+            });
+            if (result != null)
+            {
+                Dispatcher.Invoke(() => {
+                    if (result.code == 200)
+                    {
+                        User.Current.userstate = UserState.Success;
+                        removemsg(id);
+                    }
+                    else
+                    {
+                        if (result.msg == "无效的凭证")
+                        {
+                            User.Current.userstate = UserState.PasswordError;
+                        }
+                    }
+
+                    RemoveMsgCompleted?.Invoke(this, new MessageEventArgs(result.code == 200, result.msg));
+                });
+            }
+
+            Dispatcher.Invoke(() => { IsMsgDeleteEnabled = true; });
         }
         public async void ChangePwAsync(string password, string newpassword)
         {
@@ -810,7 +881,5 @@ namespace tty.com
         //{
 
         //}
-
-
     }
 }
