@@ -106,7 +106,7 @@ namespace tty.Model
         {
             if (ID != -1)
             {
-                App.Core.Com.RemoveMsgAsync(ID);
+                Deleted?.Invoke(this, new EventArgs());
             }
         }
 
@@ -115,6 +115,7 @@ namespace tty.Model
             get { return (string)GetValue(UserNameProperty); }
             set { SetValue(UserNameProperty, value); }
         }
+        public event EventHandler Deleted;
         public static readonly DependencyProperty UserNameProperty =
             DependencyProperty.Register("UserName", typeof(string), typeof(MsgCard), new PropertyMetadata(null,(d,e)=> 
             {

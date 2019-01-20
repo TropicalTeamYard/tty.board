@@ -814,7 +814,11 @@ namespace tty.com
                 }
                 catch (Exception ex)
                 {
-                    RemoveMsgCompleted?.Invoke(this, new MessageEventArgs(false, ex.Message));
+                    Dispatcher.Invoke(() => {
+                        RemoveMsgCompleted?.Invoke(this, new MessageEventArgs(false, ex.Message));
+                    });
+
+                    Console.WriteLine($"---Com ---RemoveMsg ---{ex.Message}");
                 }
             });
             if (result != null)
@@ -835,6 +839,8 @@ namespace tty.com
 
                     RemoveMsgCompleted?.Invoke(this, new MessageEventArgs(result.code == 200, result.msg));
                 });
+
+                Console.WriteLine($"---Com ---RemoveMsg ---{result.msg}");
             }
 
             Dispatcher.Invoke(() => { IsMsgDeleteEnabled = true; });
