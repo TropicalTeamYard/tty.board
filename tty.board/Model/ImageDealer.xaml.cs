@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace tty.demo
+namespace tty.Model
 {
     /// <summary>
     /// ImageDealer.xaml 的交互逻辑
     /// </summary>
     public partial class ImageDealer : UserControl
     {
-        private const int MINSIZE = 80;
+        private const int MINSIZE = 30;
         /// <summary>
         /// 0:左上角,1:右上角,2:左下角,3:右下角,4:整体移动。
         /// </summary>
@@ -48,8 +48,7 @@ namespace tty.demo
 
         private void SetRectangle()
         {
-            Size canvasSize;
-            Rect rect = GetRect(out canvasSize);
+            Rect rect = GetRect(out Size canvasSize);
 
             //移动元素
             rtLeft.Width = rect.Left; rtLeft.Height = canvasSize.Height;

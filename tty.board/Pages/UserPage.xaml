@@ -22,7 +22,7 @@
                     <model:ImageTriggerButtonRound 
                         x:Name="imgPortrait" 
                         CanAutoCheck="False" 
-                        Margin="5" />
+                        Margin="5" Click="ImgPortrait_Click"/>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -130,7 +130,9 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <Grid x:Name="gridRepairFlyout" Background="#99000000" Visibility="Collapsed" >
+        <Grid x:Name="gridRepairFlyout" 
+              Background="#99000000" 
+              Visibility="Collapsed" >
             <Grid Height="240">
                 <model:IconButtonRound  
                     Width="40" 
@@ -344,6 +346,67 @@
                     Text="&#xe7e8;" 
                     Click="IconButtonExit_Click"/>
             </Grid>
+        </Grid>
+        <Grid x:Name="gridChangePortraitFlyout"
+              Background="#99000000"
+              Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <model:IconButtonRound 
+                    Width="40" 
+                    Height="40" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10,10,0,0"
+                    Text="&#xe72b;" 
+                    Click="IconButtonChangePortraitBack_Click"/>
+            <model:ImageDealer 
+                x:Name="imgd" 
+                Grid.Row="1" 
+                Width="240" 
+                Height="240" 
+                Source="/Assets/sampleicon.jpg" 
+                ClipMode="Square"
+                Visibility="Collapsed"/>
+            <model:IconBar 
+                x:Name="ibarPortraitSubmit"
+                Style="{StaticResource IIconBar}" 
+                Grid.Row="2" 
+                Grid.ColumnSpan="2" 
+                Width="120" 
+                Margin="5" 
+                IsEnabled="False" 
+                Icon="&#xe73e;"  
+                Text="提交更改"    
+                Click="IconBarPortraitSubmit_Click"/>
+            <model:IconBar 
+                Style="{StaticResource IIconBar}" 
+                Grid.Row="4" 
+                Grid.ColumnSpan="2" 
+                Width="120" 
+                Margin="5" 
+                IsEnabled="True" 
+                Background="#AAAA44"
+                Icon="&#xeb9f;"  
+                Text="选择图片"    
+                Click="IconBarPickPic_Click"/>
+            <model:IconBar 
+                Style="{StaticResource IIconBar}" 
+                Grid.Row="5" 
+                Grid.ColumnSpan="2" 
+                Width="120" 
+                Margin="5" 
+                IsEnabled="True" 
+                Background="#AAAA44"
+                Icon="&#xe8c6;"  
+                Text="屏幕截图"/>
         </Grid>
     </Grid>
 </Page>

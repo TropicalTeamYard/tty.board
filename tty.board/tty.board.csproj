@@ -76,6 +76,9 @@
     <Compile Include="Model\IconTriggerButtonRound.xaml.cs">
       <DependentUpon>IconTriggerButtonRound.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\ImageDealer.xaml.cs">
+      <DependentUpon>ImageDealer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ImageTriggerButtonRound.xaml.cs">
       <DependentUpon>ImageTriggerButtonRound.xaml</DependentUpon>
     </Compile>
@@ -154,6 +157,10 @@
     <Page Include="Model\IconTriggerButtonRound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\ImageDealer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Model\ImageTriggerButtonRound.xaml">
       <SubType>Designer</SubType>

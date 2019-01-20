@@ -165,6 +165,7 @@ namespace tty.com
         public event EventHandler<MessageEventArgs> ChangeNickNameCompleted;
         public event EventHandler<MessageEventArgs> AddMsgCompleted;
         public event EventHandler<MessageEventArgs> ChangePwCompleted;
+        public event EventHandler<MessageEventArgs> ChangePortraitCompleted;
 
         public UserInfo GetUserInfo(string username)
         {
@@ -481,7 +482,7 @@ namespace tty.com
             }
 
         }
-        public async void ChangeNickName(string nickname)
+        public async void ChangeNickNameAsync(string nickname)
         {
             ResponceModel result = null;
             await Task.Run(() =>
@@ -520,6 +521,47 @@ namespace tty.com
                     }
                 });
                 Console.WriteLine($"---COM ---ChangeNickName ---{result.msg}");
+            }
+        }
+        public async void ChangePortraitAsync(BitmapImage bitmap)
+        {
+            ResponceModel result = null;
+            await Task.Run(()=> 
+            {
+                try
+                {
+                    var postdata = $"credit={User.Current.credit}&portrait={ToolUtil.BytesToHex(ToolUtil.BitmapImageToBytes(bitmap))}";
+                    result = JsonConvert.DeserializeObject<ResponceModel>(
+                         HttpUtil.post(API[APIKey.SetInfo], postdata)
+                        );
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(() => {
+                        ChangePortraitCompleted?.Invoke(this, new MessageEventArgs(false, ex.Message));
+                    });
+
+                    Console.WriteLine($"---Com ---ChangePortrait ---{ex.Message}");
+                }
+            });
+            if (result != null)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (result.code == 200)
+                    {
+                        User.Current.userstate = UserState.Success;
+                        User.Current.portrait = ToolUtil.BytesToHex(ToolUtil.BitmapImageToBytes(bitmap));
+                    }
+                    else
+                    {
+                        User.Current.userstate = UserState.PasswordError;
+                    }
+                    ChangePortraitCompleted?.Invoke(this, new MessageEventArgs(result.code == 200, result.msg));
+
+                });
+
+                Console.WriteLine($"---Com ---ChangePortrait ---{result.msg}");
             }
         }
         public async Task GetSharedUserInfoAsync(IEnumerable<string> users)
@@ -764,10 +806,10 @@ namespace tty.com
 
             Console.WriteLine($"---Com ---ChangePw ---{result.msg}");
         }
-        public async void DeleteMsgAsync(string id)
-        {
+        //public async void DeleteMsgAsync(string id)
+        //{
 
-        }
+        //}
 
 
     }

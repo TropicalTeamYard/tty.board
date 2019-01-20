@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tty.demo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        Title="MainWindow" Height="800" Width="1200">
     <Grid>
-        <Grid Width="640" Height="640">
-            <local:ImageDealer Source="/1.jpg" />
-        </Grid>
+        <local:ImageDealer x:Name="imgd" Width="300" Height="300" Source="1.jpg" ClipMode="Any" Margin="555,79,338.6,391.4"/>
+        <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500">
+            <Image x:Name="img"/>
+        </Viewbox>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="600,550,0,0" Click="Button_Click" />
+
     </Grid>
 </Window>

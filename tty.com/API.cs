@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tty.com.Data
+namespace tty.com
 {
     public sealed class API
     {

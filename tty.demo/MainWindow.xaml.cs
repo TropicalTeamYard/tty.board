@@ -24,5 +24,10 @@ namespace tty.demo
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            img.Source = imgd.ClipSource;
+        }
     }
 }

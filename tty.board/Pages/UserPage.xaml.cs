@@ -16,6 +16,7 @@ using tty.com.Model;
 using tty.com;
 using tty.com.Util;
 using tty.Model;
+using Microsoft.Win32;
 
 namespace tty.Pages
 {
@@ -36,6 +37,7 @@ namespace tty.Pages
             App.Core.Com.LoginCompleted += Com_LoginCompleted;
             App.Core.Com.ChangeNickNameCompleted += Com_ChangeNickNameCompleted;
             App.Core.Com.ChangePwCompleted += Com_ChangePwCompleted;
+            App.Core.Com.ChangePortraitCompleted += Com_ChangePortraitCompleted;
             Console.WriteLine("---Window ---UserPage ---SetBinding");
         }
         private void OnUserStateChanged()
@@ -46,9 +48,11 @@ namespace tty.Pages
                 ibarRepairOpen.IsEnabled = true;
                 tbkRepair.Text = "需要修复账户";
                 gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
+                gridChangePortraitFlyout.Visibility = Visibility.Collapsed;
                 //禁用其他操作
                 ibarChangeInfoOpen.IsEnabled = false;
                 ibarChangePwOpen.IsEnabled = false;
+
             }
             else
             {
@@ -163,7 +167,7 @@ namespace tty.Pages
         }
         private void BtnChangeInfo_Click(object sender, RoutedEventArgs e)
         {
-            App.Core.Com.ChangeNickName(tbxNickName.Text);
+            App.Core.Com.ChangeNickNameAsync(tbxNickName.Text);
             gridChangeInfoFlyout.Visibility = Visibility.Collapsed;
         }
         #endregion
@@ -274,5 +278,48 @@ namespace tty.Pages
             App.Core.Com.ChangePwAsync(pwb_1.Password, pwb_2.Password);
         }
         #endregion
+        #region 修改头像
+        private void Com_ChangePortraitCompleted(object sender, MessageEventArgs e)
+        {
+            App.Core.Window.SendMessage(e.Msg);
+        }
+        private void IconButtonChangePortraitBack_Click(object sender, RoutedEventArgs e)
+        {
+            gridChangePortraitFlyout.Visibility = Visibility.Collapsed;
+        }
+        private void IconBarPickPic_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = ".jpg|*.jpg|.png|*.png|.jpeg|*.jpeg";
+            if (dialog.ShowDialog() == false) return;
+            string _fileName = dialog.FileName;
+            //初始化图片
+            BitmapImage tempImage = new BitmapImage();
+            tempImage.BeginInit();
+            tempImage.UriSource = new Uri(_fileName, UriKind.RelativeOrAbsolute);
+            tempImage.EndInit();
+
+            imgd.Source = tempImage;
+            imgd.SelectArea = null;
+            imgd.Visibility = Visibility.Visible;
+            ibarPortraitSubmit.IsEnabled = true;
+        }
+        private void ImgPortrait_Click(object sender, RoutedEventArgs e)
+        {
+            if (UserState == UserState.Success)
+            {
+                gridChangePortraitFlyout.Visibility = Visibility.Visible;
+            }
+        }
+        private void IconBarPortraitSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bitmapImage = ToolUtil.ReSizeImage(imgd.ClipSource, new Size(218, 218));
+            Console.WriteLine($"---Window ---UserPage ---CutPic:width={bitmapImage.PixelWidth};height={bitmapImage.PixelHeight}");
+            App.Core.Com.ChangePortraitAsync(bitmapImage);
+            gridChangePortraitFlyout.Visibility = Visibility.Collapsed;
+        }
+        #endregion
+
+
     }
 }

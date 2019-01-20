@@ -1,14 +1,14 @@
-﻿<UserControl x:Name="ImageDealerthis" x:Class="tty.demo.ImageDealer"
+﻿<UserControl x:Name="ImageDealerthis" x:Class="tty.Model.ImageDealer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:tty.demo"
+             xmlns:local="clr-namespace:tty.Model"
              mc:Ignorable="d" 
              Height="640" Width="640" Loaded="ImageDealer_Loaded">
     <Grid>
         <Grid Margin="20">
-            <Image x:Name="img" Source="{Binding Source,ElementName=ImageDealerthis}" />
+            <Image x:Name="img" Source="{Binding Source,ElementName=ImageDealerthis}"/>
             <Canvas x:Name="cv1">
                 <Rectangle x:Name="rtLeft" Fill="#88000000" Width="150" Height="600"/>
                 <Rectangle x:Name="rtRight" Fill="#88000000" Width="100" Height="600" Margin="500,0,0,0"/>
