@@ -27,6 +27,7 @@ namespace tty.com.Model
         private string _content = "";
         //private string _nickname = "昵称";
         //private BitmapImage _portrait = null;
+        private bool _isshown = true;
 
         public int id { get; set; }
         public string username
@@ -56,6 +57,16 @@ namespace tty.com.Model
             {
                 _content = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(content)));
+            }
+        }
+        [JsonIgnore]
+        public bool isshown
+        {
+            get => _isshown;
+            set
+            {
+                _isshown = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isshown)));
             }
         }
 

@@ -53,6 +53,11 @@ namespace tty.Model
             get { return (int)GetValue(IDProperty); }
             set { SetValue(IDProperty, value); }
         }
+        public bool IsShown
+        {
+            get { return (bool)GetValue(IsShownProperty); }
+            set { SetValue(IsShownProperty, value); }
+        }
 
         private void OnUserInfoChanged()
         {
@@ -91,6 +96,17 @@ namespace tty.Model
 
                 tbkComment.Text = stringBuilder.ToString();
                 tbkComment.Visibility = Visibility.Visible;
+            }
+        }
+        private void OnIsShownChanged()
+        {
+            if (IsShown)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
             }
         }
 
@@ -132,5 +148,10 @@ namespace tty.Model
             }));
         public static readonly DependencyProperty IDProperty =
             DependencyProperty.Register("ID", typeof(int), typeof(MsgCard), new PropertyMetadata(-1));
+        public static readonly DependencyProperty IsShownProperty =
+            DependencyProperty.Register("IsShown", typeof(bool), typeof(MsgCard), new PropertyMetadata(true,(d,e)=> 
+            {
+                ((MsgCard)d).OnIsShownChanged();
+            }));
     }
 }

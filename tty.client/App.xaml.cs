@@ -56,14 +56,14 @@ namespace tty
             {
             }
         }
-        public void SaveUserSettings()
-        {
-            Core.Com.Finish();
-        }
+        //public void SaveUserSettings()
+        //{
+        //    Core.Com.Finish();
+        //}
 
-        public Com Com { get; set; }
-        public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.board";
-        private string windowpath  => Cache + @"\window.json";
+        //public Com Com { get; set; }
+        public string Cache { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\tty.client";
+        private string windowpath => Cache + @"\window.json";
         public static App Core => (App)Current;
         /// <summary>
         /// 获取程序的主窗体.

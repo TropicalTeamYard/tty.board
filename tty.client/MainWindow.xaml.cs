@@ -49,14 +49,13 @@ namespace tty
                 windowLocation = new Point(Left / ScreenSize.Width, Top / ScreenSize.Height);
                 windowSize = new Size(Width / ScreenSize.Width, Height / ScreenSize.Height);
             };
-            if (App.Core.Com == null)
-            {
-                App.Core.Com = new Com(Dispatcher);
-            }
-            //{debug}
-            NavigateTo(typeof(StartPage));
-            //{debug}
-            //SetTitleBar(BorderWindowMove);
+            //if (App.Core.Com == null)
+            //{
+            //    App.Core.Com = new Com(Dispatcher);
+            //}
+
+            NavigateTo(typeof(MainPage));
+
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -276,7 +275,7 @@ namespace tty
         private void IconButtonCloseWindow_Click(object sender, RoutedEventArgs e)
         {
             App.Core.SaveWindowSettings();
-            App.Core.SaveUserSettings();
+            //App.Core.SaveUserSettings();
             Close();
         }
         private void IconButtonFullScreen_Click(object sender, RoutedEventArgs e)

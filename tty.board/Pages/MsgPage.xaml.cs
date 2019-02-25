@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using tty.com.Model;
+using tty.Model;
 
 namespace tty.Pages
 {
@@ -95,5 +96,30 @@ namespace tty.Pages
         }
         #endregion
 
+        private void TbxFind_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbxFind.Text == "")
+            {
+                foreach (MsgUni item in listMsg.Items)
+                {
+                    item.isshown = true;
+                }
+            }
+            else
+            {
+                var text = tbxFind.Text;
+                foreach (MsgUni item in listMsg.Items)
+                {
+                    if (/*item.username.ToLower().Contains(text.ToLower()) || */item.content.ToLower().Contains(text.ToLower()) || App.Core.Com.GetUserInfo(item.username).nickname.ToLower().Contains(text.ToLower()))
+                    {
+                        item.isshown = true;
+                    }
+                    else
+                    {
+                        item.isshown = false;
+                    }
+                }
+            }
+        }
     }
 }

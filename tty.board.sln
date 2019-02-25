@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.com", "tty.com\tty.com.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.demo", "tty.demo\tty.demo.csproj", "{26870894-7B70-451F-82FA-DD1DA23170BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tty.client", "tty.client\tty.client.csproj", "{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{26870894-7B70-451F-82FA-DD1DA23170BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26870894-7B70-451F-82FA-DD1DA23170BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26870894-7B70-451F-82FA-DD1DA23170BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

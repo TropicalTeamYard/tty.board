@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6928341-B393-4271-B2DB-ED25195E7ED3}</ProjectGuid>
+    <ProjectGuid>{1AB13FBD-B88F-4CE5-B40E-6D0ED3C0AA55}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>tty</RootNamespace>
     <AssemblyName>tty.board</AssemblyName>
@@ -85,29 +85,11 @@
     <Compile Include="Model\ImageTriggerButtonRound.xaml.cs">
       <DependentUpon>ImageTriggerButtonRound.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\MsgCard.xaml.cs">
-      <DependentUpon>MsgCard.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\ProcessRing.cs" />
-    <Compile Include="Pages\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MsgPage.xaml.cs">
-      <DependentUpon>MsgPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\RegisterView.xaml.cs">
-      <DependentUpon>RegisterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\StartPage.xaml.cs">
-      <DependentUpon>StartPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Pages\UserPage.xaml.cs">
-      <DependentUpon>UserPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\NavigationHelper.cs" />
     <Compile Include="Windows\WindowsTool.cs" />
     <Page Include="MainWindow.xaml">
@@ -170,35 +152,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Model\MsgCard.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Model\UButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\MsgPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\RegisterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\StartPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
